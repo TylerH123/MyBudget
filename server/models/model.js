@@ -1,11 +1,11 @@
 const mongoose = require('mongoose');
 
-const spendingSchema = new mongoose.Schema({
+const billSchema = new mongoose.Schema({
     category: {
         type: String,
         required: true,
     },
-    subCategory: String, // Subcategory is optional (default: null)
+    subcategory: String, // Subcategory is optional (default: null)
     date: {
         type: Date,
         default: Date.now, // Default to today's date
@@ -17,5 +17,7 @@ const spendingSchema = new mongoose.Schema({
     description: String, // Description is optional
 });
 
+const Bill = mongoose.model('Bill', billSchema);
+
 // Export the model
-module.exports = mongoose.model('Spending', spendingSchema);
+module.exports = Bill;
