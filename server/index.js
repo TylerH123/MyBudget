@@ -1,6 +1,6 @@
 // Import the required modules
 const mongoose = require('mongoose');
-const Bill = require('./models/model');
+const billSchema = require('./models/model');
 
 require('dotenv').config();
 
@@ -21,7 +21,7 @@ db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
 async function createNewBill(collectionName, billDetails) {
     try {
-        const dynamicModel = mongoose.model('Bill', Bill.billSchema, collectionName);
+        const dynamicModel = mongoose.model('Bill', billSchema, collectionName);
 
         const newBill = new dynamicModel({
             category: billDetails.category,
@@ -33,7 +33,7 @@ async function createNewBill(collectionName, billDetails) {
 
         return newBill;
     } catch (e) {
-        console.log(e);
+        console.error(e);
     }
 }
 
