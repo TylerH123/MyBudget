@@ -1,0 +1,22 @@
+{
+  "name": "mybudget",
+  "version": "1.0.0",
+  "description": "An app to visualize spending",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/TylerH123/MyBudget.git"
+  },
+  "author": "Tyler Huang",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/TylerH123/MyBudget/issues"
+  },
+  "homepage": "https://github.com/TylerH123/MyBudget#readme",
+  "dependencies": {
+    "latest-version": "^7.0.0"
+  }
+}
