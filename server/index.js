@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const models = require('./models/model');
 
 const yrToModel = {
-    '2023': models.bill2023Model,
+    '2023': models.bills2023Model,
 }
 
 require('dotenv').config();
