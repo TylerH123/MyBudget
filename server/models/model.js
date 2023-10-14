@@ -17,6 +17,9 @@ const billSchema = new mongoose.Schema({
     description: String, // Description is optional
 });
 
+const bill2023Model = mongoose.model('Bill', billSchema, '2023');
 
 // Export the model
-module.exports = billSchema;
+module.exports = {
+    bill2023Model
+};

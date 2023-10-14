@@ -1,6 +1,10 @@
 // Import the required modules
 const mongoose = require('mongoose');
-const billSchema = require('./models/model');
+const models = require('./models/model');
+
+const yrToModel = {
+    '2023': models.bill2023Model,
+}
 
 require('dotenv').config();
 
@@ -21,9 +25,7 @@ db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
 async function createNewBill(collectionName, billDetails) {
     try {
-        const dynamicModel = mongoose.model('Bill', billSchema, collectionName);
-
-        const newBill = new dynamicModel({
+        const newBill = new yrToModel[collectionName]({
             category: billDetails.category,
             subcategory: billDetails.subcategory,
             date: billDetails.date,
@@ -46,24 +48,6 @@ db.once('open', async () => {
             date: new Date("2023-10-07"),
             amount: 14.94,
             description: "",
-        };
-
-        const newBill = await createNewBill('2023', billDetails);
-        const savedBill = await newBill.save();
-        console.log("New bill saved: ", savedBill);
-    } catch (e) {
-        console.error(e);
-    }
-});
-
-db.once('open', async () => {
-    try {
-        const billDetails = {
-            category: "Poop",
-            subcategory: null,
-            date: new Date(),
-            amount: 15,
-            description: null,
         };
 
         const newBill = await createNewBill('2023', billDetails);
