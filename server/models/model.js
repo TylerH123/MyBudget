@@ -9,10 +9,9 @@ const yrToModel = {
 
 require('dotenv').config();
 
-const dbPassword = process.env.MONGODB_PASSWORD;
+const uri = process.env.MONGODB_URI;
 
-// Define the MongoDB Atlas connection URI
-const uri = `mongodb+srv://admin:${dbPassword}@mybudget.7mfi1b0.mongodb.net/?retryWrites=true&w=majority`;
+// Define the MongoDB Atlas connection UR
 mongoose.connect(uri, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
