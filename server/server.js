@@ -1,8 +1,7 @@
 // Import the required modules
-const model = require('./models/model');
 const express = require('express');
-const myBudgetRoutes = require('./routes/spendings');
 const mongoose = require('mongoose');
+const myBudgetRoutes = require('./routes/billsRoutes');
 require('dotenv').config();
 
 const app = express();
@@ -20,7 +19,7 @@ app.get('/', (req, res) => {
     res.json({ 'msg': 'Welcome to API' });
 });
 
-app.use('/api/spendings', myBudgetRoutes);
+app.use('/api/bills', myBudgetRoutes);
 
 // Define the MongoDB Atlas connection UR
 // Start listening once db connection is established
