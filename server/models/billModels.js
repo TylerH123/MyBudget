@@ -1,6 +1,10 @@
 const mongoose = require('mongoose');
 
 const billSchema = new mongoose.Schema({
+    owner: {
+        type: String,
+        required: true,
+    },
     category: {
         type: String,
         required: true,
