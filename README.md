@@ -17,23 +17,44 @@ Before you begin, ensure you have met the following requirements:
 ```bash
 git clone https://github.com/TylerH123/MyBudget
 cd MyBudget
+```
 
-Install Dependencies
+### Install Dependencies
 
-Install server-side dependencies:
+#### Install server-side dependencies:
+```bash
 cd server
 npm install
+```
 
-Install client-side dependencies:
+#### Install client-side dependencies:
+```bash
 cd client
 npm install
+```
 
-Create .env File
+#### Create .env File
 
 Create a .env file in the server directory with the following content:
+- MONGODB_URI=<your_mongodb_uri>
+- PORT=3000
 
-env
+### Start the server:
+```bash
+cd server
+npm start
+```
 
-MONGODB_URI=your_mongodb_uri
-PORT=3000
+### Start the client:
+```bash
+cd client
+npm start
+```
 
+### Visit http://localhost:3000 in your web browser to view the app.
+
+## Usage
+
+## Contributing
+
+## License
