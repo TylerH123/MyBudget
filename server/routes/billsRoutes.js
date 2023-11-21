@@ -1,25 +1,22 @@
 const express = require('express');
 const {
     getBills,
+    getBill,
     createBill,
+    deleteBill,
+    updateBill
 } = require('../controllers/billController');
 
 const router = express.Router();
 
 router.get('/', getBills);
 
-router.get('/:id', (req, res) => {
-    res.json({ msg: 'Get a single bill' });
-});
+router.get('/:id', getBill);
 
 router.post('/', createBill);
 
-router.delete('/', (req, res) => {
-    res.json({ msg: 'Delete a single bill' });
-});
+router.delete('/:id', deleteBill);
 
-router.patch('/', (req, res) => {
-    res.json({ msg: 'Update a single bill' });
-});
+router.patch('/:id', updateBill);
 
 module.exports = router;
