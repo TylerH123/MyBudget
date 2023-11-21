@@ -51,7 +51,7 @@ cd client
 npm start
 ```
 
-### Visit http://localhost:3000 in your web browser to view the app.
+#### Visit http://localhost:3000 in your web browser to view the app.
 
 ## Usage
 
