@@ -1,7 +1,8 @@
-import { useState } from "react"
-import { json } from "react-router-dom";
+import { useState } from "react";
+import { useBillsContext } from "../hooks/useBillsContext";
 
 const BillForm = () => {
+	const { dispatch } = useBillsContext();
 	const [ category, setCategory ] = useState('');
 	const [ subcategory, setSubcategory ] = useState('');
 	const [ date, setDate ] = useState(new Date());
@@ -16,30 +17,34 @@ const BillForm = () => {
 		e.preventDefault();
 
 		const owner = 'Tyler';
-		const bill = { owner, category, subcategory, date, amount, description};
+		const dateObject = date.setUTCHours(0, 0, 0, 0);
+		const bill = { owner, category, subcategory, dateObject, amount, description};
 
-		const res = await fetch('http://localhost:4000/api/bills/', {
-			method: 'POST',
-			body: JSON.stringify(bill),
-			headers: {
-				'Content-Type': 'application/json'
+		try {
+			const res = await fetch('http://localhost:4000/api/bills/', {
+				method: 'POST',
+				body: JSON.stringify(bill),
+				headers: {
+					'Content-Type': 'application/json'
+				}
+			});
+
+			const data = await res.json();
+
+			if (!res.ok) {
+				throw new Error(data.error);
 			}
-		});
 
-		const data = await res.json();
-
-		if (!res.ok) {
-			setError(json.error);
-		}
-		
-		if (res.ok) {
 			setCategory('');
 			setSubcategory('');
-			setDate(new Date().setUTCHours(0, 0, 0, 0));
+			setDate(new Date());
 			setAmount(0.0);
 			setDescription('');
 			setError(null);
 			console.log("New bill added");
+			dispatch({type: 'CREATE_BILL', payload: data});
+		} catch (error) {
+			setError(error.message);
 		}
 	}
 
@@ -52,6 +57,7 @@ const BillForm = () => {
 				type="text"
 				onChange={(e) => setCategory(e.target.value)}
 				value={category}
+				required
 			/>
 
 			<label>Bill Subcategory:</label>
@@ -66,14 +72,17 @@ const BillForm = () => {
 				type="date"
 				onChange={(e) => setDate(new Date(e.target.value))}
 				value={date.toISOString().slice(0, 10)}
+				required
 			/>
 
 			<label>Bill Amount:</label>
 			<input 
 				type="number"
 				step="0.01"
+				onClick={(e) => {e.target.select()}}
 				onChange={(e) => setAmount(e.target.value)}
 				value={amount}
+				required
 			/>
 
 			<label>Bill Description:</label>

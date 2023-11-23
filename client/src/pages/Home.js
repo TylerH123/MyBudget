@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
+import { useBillsContext } from "../hooks/useBillsContext";
 
+// components
 import BillForm from "../components/BillForm";
 
 const Home = () => {
-	const [ bills, setBills ] = useState(null);
+	const { bills, dispatch } = useBillsContext();
 
 	useEffect(() => {
 		const fetchBills = async () => {
@@ -12,7 +14,7 @@ const Home = () => {
 		  const data = await res.json();
 		  
 		  if (res.ok) {
-			setBills(data);
+			dispatch({type: 'SET_BILLS', payload: data});
 		  }
 		}
 	  
