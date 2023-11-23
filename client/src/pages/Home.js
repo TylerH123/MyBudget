@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 
+import BillForm from "../components/BillForm";
+
 const Home = () => {
 	const [ bills, setBills ] = useState(null);
 
@@ -28,6 +30,7 @@ const Home = () => {
 					<p key={bill._id}>{bill.category} - {bill.subcategory}: ${bill.amount}</p>
 				))}
 			</div>
+			<BillForm />
 		</div>
 	)
 }

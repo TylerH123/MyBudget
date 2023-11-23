@@ -12,7 +12,9 @@ const billSchema = new mongoose.Schema({
     subcategory: String, // Subcategory is optional (default: null)
     date: {
         type: Date,
-        default: Date.now, // Default to today's date
+        default: () => {
+            return new Date().setUTCHours(0, 0, 0, 0);
+        }
     },
     amount: {
         type: Number,
