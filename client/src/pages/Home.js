@@ -1,24 +1,32 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useBillsContext } from "../hooks/useBillsContext";
 
 // components
 import BillForm from "../components/BillForm";
 
+// TODO:
+// add spinner for loading
 const Home = () => {
 	const { bills, dispatch } = useBillsContext();
 
 	useEffect(() => {
-		const fetchBills = async () => {
-		  console.log("fetching");
-		  const res = await fetch('http://localhost:4000/api/bills');
-		  const data = await res.json();
-		  
-		  if (res.ok) {
-			dispatch({type: 'SET_BILLS', payload: data});
-		  }
+		try {
+			const fetchBills = async () => {
+				console.log("fetching");
+				const res = await fetch('http://localhost:4000/api/bills');
+				const data = await res.json();
+			  
+				if (!res.ok) {
+					throw new Error(data.error);
+				}
+
+				dispatch({type: 'SET_BILLS', payload: data});
+			}
+			fetchBills();
+		} catch (error) {
+			console.log(error);
 		}
-	  
-		fetchBills();
+		
 	}, []); // empty dependency array to run the effect only on mount
 	
 	if(!bills) {
