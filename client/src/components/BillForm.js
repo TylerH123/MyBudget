@@ -4,11 +4,16 @@ import { useBillsContext } from "../hooks/useBillsContext";
 const BillForm = () => {
 	const { dispatch } = useBillsContext();
 	const [ category, setCategory ] = useState('');
+	const [ touched, setTouched ] = useState(false);
 	const [ subcategory, setSubcategory ] = useState('');
 	const [ date, setDate ] = useState(new Date());
 	const [ amount, setAmount ] = useState(0.0);
 	const [ description, setDescription ] = useState('');
 	const [ error, setError ] = useState(null);
+
+	const handleTouch = () => {
+		setTouched(true);
+	}
 
 	// TODO:
 	// authenticate user
@@ -57,6 +62,8 @@ const BillForm = () => {
 				type="text"
 				onChange={(e) => setCategory(e.target.value)}
 				value={category}
+				className={touched && category === '' ? 'error' : ''}
+				onClick={handleTouch}
 				required
 			/>
 
@@ -72,6 +79,7 @@ const BillForm = () => {
 				type="date"
 				onChange={(e) => setDate(new Date(e.target.value))}
 				value={date.toISOString().slice(0, 10)}
+				className={date === '' ? 'error' : ''}
 				required
 			/>
 
@@ -82,6 +90,7 @@ const BillForm = () => {
 				onClick={(e) => {e.target.select()}}
 				onChange={(e) => setAmount(e.target.value)}
 				value={amount}
+				className={amount === '' ? 'error' : ''}
 				required
 			/>
 
