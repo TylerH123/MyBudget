@@ -28,6 +28,22 @@ const Home = () => {
 		}
 		
 	}, []); // empty dependency array to run the effect only on mount
+
+	const handleDelete = async (id) => {
+		try {
+			const res = await fetch('http://localhost:4000/api/bills/' + id, {
+				method: 'DELETE'
+			});
+			const data = await res.json();
+			if (!res.ok) {
+				throw new Error(data.error);
+			}
+			
+			dispatch({type: 'DELETE_BILL', payload: data})
+		} catch (error) {
+			console.log(error);
+		}
+	}
 	
 	if(!bills) {
 		return <div>Loading...</div> 
@@ -37,7 +53,10 @@ const Home = () => {
 		<div className="home">
 			<div className="bills">
 				{ bills && bills.map((bill) => (
-					<p key={bill._id}>{bill.category} - {bill.subcategory}: ${bill.amount}</p>
+					<div key={bill._id}>
+						{bill.category} - {bill.subcategory}: ${bill.amount}
+						<button onClick={handleDelete.bind(this, bill._id)}>Delete</button>
+					</div>
 				))}
 			</div>
 			<BillForm />

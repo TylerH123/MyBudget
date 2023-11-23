@@ -17,8 +17,7 @@ const BillForm = () => {
 		e.preventDefault();
 
 		const owner = 'Tyler';
-		const dateObject = date.setUTCHours(0, 0, 0, 0);
-		const bill = { owner, category, subcategory, dateObject, amount, description};
+		const bill = { owner, category, subcategory, date, amount, description };
 
 		try {
 			const res = await fetch('http://localhost:4000/api/bills/', {
@@ -35,6 +34,7 @@ const BillForm = () => {
 				throw new Error(data.error);
 			}
 
+			// Reset form
 			setCategory('');
 			setSubcategory('');
 			setDate(new Date());
