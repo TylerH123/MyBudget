@@ -12,10 +12,12 @@ const billSchema = new mongoose.Schema({
     subcategory: String, // Subcategory is optional (default: null)
     date: {
         type: Date,
-        default: () => Date.now
+        default: Date.now,
+        required: true
     },
     amount: {
         type: Number,
+        integer: true,
         required: true,
     },
     description: String, // Description is optional

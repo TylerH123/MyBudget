@@ -4,6 +4,13 @@ import { useBillsContext } from "../hooks/useBillsContext";
 // components
 import BillForm from "../components/BillForm";
 
+const displayBillAmount = (amount) => {
+	if (amount % 100 === 0) {
+		return (amount / 100).toString() + '.00'
+	}
+	return (amount / 100).toString()
+}
+
 // TODO:
 // add spinner for loading
 const Home = () => {
@@ -27,7 +34,7 @@ const Home = () => {
 			console.log(error);
 		}
 		
-	}, []); // empty dependency array to run the effect only on mount
+	}, [dispatch]); // empty dependency array to run the effect only on mount
 
 	const handleDelete = async (id) => {
 		try {
@@ -54,7 +61,7 @@ const Home = () => {
 			<div className="bills">
 				{ bills && bills.map((bill) => (
 					<div key={bill._id}>
-						{bill.category} - {bill.subcategory}: ${bill.amount}
+						{bill.category} - {bill.subcategory}: ${displayBillAmount(bill.amount)}
 						<button onClick={handleDelete.bind(this, bill._id)}>Delete</button>
 					</div>
 				))}

@@ -1,13 +1,14 @@
 import { useState } from "react";
 import { useBillsContext } from "../hooks/useBillsContext";
 
+
 const BillForm = () => {
 	const { dispatch } = useBillsContext();
 	const [ category, setCategory ] = useState('');
 	const [ touched, setTouched ] = useState(false);
 	const [ subcategory, setSubcategory ] = useState('');
 	const [ date, setDate ] = useState(new Date());
-	const [ amount, setAmount ] = useState(0.0);
+	const [ amount, setAmount ] = useState("$0");
 	const [ description, setDescription ] = useState('');
 	const [ error, setError ] = useState(null);
 
@@ -22,7 +23,12 @@ const BillForm = () => {
 		e.preventDefault();
 
 		const owner = 'Tyler';
-		const bill = { owner, category, subcategory, date, amount, description };
+		const amountArr = amount.slice(1).split('.');
+		let billAmount = parseInt(amountArr[0]) * 100;
+		if (amountArr.length === 2) {
+			billAmount += parseInt(amountArr[1]);
+		}
+		const bill = { owner, category, subcategory, date, amount: billAmount, description };
 
 		try {
 			const res = await fetch('http://localhost:4000/api/bills/', {
@@ -43,7 +49,7 @@ const BillForm = () => {
 			setCategory('');
 			setSubcategory('');
 			setDate(new Date());
-			setAmount(0.0);
+			setAmount("$0");
 			setDescription('');
 			setError(null);
 			console.log("New bill added");
@@ -51,6 +57,11 @@ const BillForm = () => {
 		} catch (error) {
 			setError(error.message);
 		}
+	}
+
+	// TODO: finish validation logic for amount input field 
+	const validateAmount = () => {
+
 	}
 
 	return (
@@ -85,10 +96,10 @@ const BillForm = () => {
 
 			<label>Bill Amount:</label>
 			<input 
-				type="number"
-				step="0.01"
+				type="text"
 				onClick={(e) => {e.target.select()}}
-				onChange={(e) => setAmount(e.target.value)}
+				onChange={(e) => {setAmount(`$${e.target.value.replace(/[^\d.]/g, '')}`)}}
+				onBlur={validateAmount}
 				value={amount}
 				className={amount === '' ? 'error' : ''}
 				required
