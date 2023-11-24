@@ -3,6 +3,7 @@ import { useBillsContext } from "../hooks/useBillsContext";
 
 // components
 import BillForm from "../components/BillForm";
+import CSVParser from "../components/CSVParser";
 
 const displayBillAmount = (amount) => {
 	if (amount % 100 === 0) {
@@ -67,6 +68,7 @@ const Home = () => {
 				))}
 			</div>
 			<BillForm />
+			<CSVParser />
 		</div>
 	)
 }

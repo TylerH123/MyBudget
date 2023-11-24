@@ -61,11 +61,12 @@ const BillForm = () => {
 
 	// TODO: finish validation logic for amount input field 
 	const validateAmount = () => {
-
+		
 	}
-
+	
 	return (
 		<form className="create" onSubmit={handleSubmit}>
+			{error && <div className="error">{error}</div>}
 			<h2>Add a New Bill</h2>
 
 			<label>Bill Category:</label>
@@ -114,7 +115,6 @@ const BillForm = () => {
 			/>
 
 			<button>Add Bill</button>
-			{error && <div className="error">{error}</div>}
 		</form>
 	)
 }

@@ -5,6 +5,8 @@ const yrToModel = {
     '2023': billModels.bills2023Model,
 }
 
+// TODO: find date from req and change collection inserting into
+
 // Get all bills documents in collection
 const getBills = async (req, res) => {
     // authenticate signed in user
