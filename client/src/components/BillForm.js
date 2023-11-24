@@ -54,8 +54,8 @@ const BillForm = () => {
 			setError(null);
 			console.log("New bill added");
 			dispatch({type: 'CREATE_BILL', payload: data});
-		} catch (error) {
-			setError(error.message);
+		} catch (err) {
+			setError(err.message);
 		}
 	}
 
