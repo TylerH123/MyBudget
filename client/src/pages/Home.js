@@ -62,7 +62,7 @@ const Home = () => {
 			<div className="bills">
 				{ bills && bills.map((bill) => (
 					<div key={bill._id}>
-						{bill.category} - {bill.subcategory}: ${displayBillAmount(bill.amount)}
+						{bill.date} | {bill.category} - {bill.subcategory}: ${displayBillAmount(bill.amount)}
 						<button onClick={handleDelete.bind(this, bill._id)}>Delete</button>
 					</div>
 				))}

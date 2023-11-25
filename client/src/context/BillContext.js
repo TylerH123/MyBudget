@@ -8,7 +8,6 @@ export const billsReducer = (state, action) => {
 			return {
 				bills: action.payload
 			}
-
 		case 'CREATE_BILL':
 			return {
 				bills: [action.payload, ...state.bills]

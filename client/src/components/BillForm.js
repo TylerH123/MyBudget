@@ -1,6 +1,9 @@
 import { useState } from "react";
 import { useBillsContext } from "../hooks/useBillsContext";
 
+// utils
+import { postBill } from "../utils/apiUtils";
+import { convertPriceStringToInt } from "../utils/utils";
 
 const BillForm = () => {
 	const { dispatch } = useBillsContext();
@@ -23,24 +26,11 @@ const BillForm = () => {
 		e.preventDefault();
 
 		const owner = 'Tyler';
-		const amountArr = amount.slice(1).split('.');
-		let billAmount = parseInt(amountArr[0]) * 100;
-		if (amountArr.length === 2) {
-			billAmount += parseInt(amountArr[1]);
-		}
+		const billAmount = convertPriceStringToInt(amount);
 		const bill = { owner, category, subcategory, date, amount: billAmount, description };
 
 		try {
-			const res = await fetch('http://localhost:4000/api/bills/', {
-				method: 'POST',
-				body: JSON.stringify(bill),
-				headers: {
-					'Content-Type': 'application/json'
-				}
-			});
-
-			const data = await res.json();
-
+			const [ res, data ] = await postBill(bill);
 			if (!res.ok) {
 				throw new Error(data.error);
 			}
