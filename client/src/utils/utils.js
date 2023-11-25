@@ -18,4 +18,25 @@ const convertPriceStringToInt = (price) => {
 	return amount
 }
 
-export { convertPriceStringToInt };
+/**
+ * Converts a date type object into a string with format "MM/DD/YYYY".
+ *
+ * @param {Date} date - The date object to be converted.
+ * @returns {string} - The string representation of the date.
+ *
+ * @example
+ * // Returns 01/01/2023 for the input 2023-01-01T05:00:00.000Z
+ * const result = convertPriceStringToInt(Date('2023-01-01T05:00:00.000Z'));
+*/
+const displayDate = (date) => {
+	date = new Date(date);
+	const dateString = date.toLocaleDateString('en-US', {
+		year: 'numeric',
+		month: '2-digit',
+		day: '2-digit',
+	});
+
+	return dateString;
+}
+
+export { convertPriceStringToInt, displayDate };

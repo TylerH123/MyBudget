@@ -26,7 +26,7 @@ app.get('/', (req, res) => {
     res.json({ 'msg': 'Welcome to API' });
 });
 
-app.use('/api/bills', myBudgetRoutes);
+app.use('/api/', myBudgetRoutes);
 
 // Define the MongoDB Atlas connection UR
 // Start listening once db connection is established

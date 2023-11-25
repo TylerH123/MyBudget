@@ -5,6 +5,9 @@ import { useBillsContext } from "../hooks/useBillsContext";
 import BillForm from "../components/BillForm";
 import CSVParser from "../components/CSVParser";
 
+// utils
+import { displayDate } from "../utils/utils";
+
 const displayBillAmount = (amount) => {
 	if (amount % 100 === 0) {
 		return (amount / 100).toString() + '.00'
@@ -62,7 +65,7 @@ const Home = () => {
 			<div className="bills">
 				{ bills && bills.map((bill) => (
 					<div key={bill._id}>
-						{bill.date} | {bill.category} - {bill.subcategory}: ${displayBillAmount(bill.amount)}
+						{displayDate(bill.date)} | {bill.category} - {bill.subcategory}: ${displayBillAmount(bill.amount)}
 						<button onClick={handleDelete.bind(this, bill._id)}>Delete</button>
 					</div>
 				))}

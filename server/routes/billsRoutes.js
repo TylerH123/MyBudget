@@ -4,19 +4,22 @@ const {
     getBill,
     createBill,
     deleteBill,
-    updateBill
+    updateBill,
+    resetCollection
 } = require('../controllers/billController');
 
 const router = express.Router();
 
-router.get('/', getBills);
+router.get('/bills/', getBills);
 
-router.get('/:id', getBill);
+router.get('/bill/:id', getBill);
 
-router.post('/', createBill);
+router.post('/bills/', createBill);
 
-router.delete('/:id', deleteBill);
+router.delete('/bill/:id', deleteBill);
 
-router.patch('/:id', updateBill);
+router.patch('/bill/:id', updateBill);
+
+router.delete('/bills/all', resetCollection);
 
 module.exports = router;
