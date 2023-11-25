@@ -1,6 +1,9 @@
 import { useState } from "react";
-import { useBillsContext } from "../hooks/useBillsContext";
+// import { useBillsContext } from "../hooks/useBillsContext";
 import Papa from 'papaparse';
+
+// components
+import InvalidEntries from "./InvalidEntries";
 
 // utils
 import { postBill } from "../utils/apiUtils";
@@ -20,6 +23,7 @@ const checkFileIsCSV = (inputFile) => {
 const CSVParser = () => {
 	// const { dispatch } = useBillsContext();
 	const [ error, setError ] = useState(null);
+	const [ badEntries, setBadEntries ] = useState([]);
 
 	const checkInputFile = (e) => {
 		const selectedFile = e.target.files[0];
@@ -32,16 +36,16 @@ const CSVParser = () => {
 	}
 
 	const createAndSendBill = async (item) => {
-		const bill = { 
-			owner: 'Tyler', 
-			category: 'Eating out', 
-			subcategory: item.Place, 
-			date: new Date(item.Date), 
-			amount: convertPriceStringToInt(item.Price), 
-			description: null
-		};
-
 		try {
+			const bill = { 
+				owner: 'Tyler', 
+				category: 'Eating out', 
+				subcategory: item.Place, 
+				date: new Date(item.Date), 
+				amount: convertPriceStringToInt(item.Price), 
+				description: null
+			};
+
 			const [ res, data ] = await postBill(bill); 
 			if (!res.ok) {
 				throw new Error(data.error);
@@ -50,15 +54,17 @@ const CSVParser = () => {
 			// dispatch({type: 'CREATE_BILL', payload: data});
 		} catch (err) {
 			// TODO: create array to store all bad entries and print them out later
+			console.log(err);
+			setBadEntries([...badEntries, item]);
 		}
 	}
 
 	const handleSubmit = (e) => {
-		// e.preventDefault();
-
-		const selectedFile = e.target[0].files[0];
+		e.preventDefault();
 		try {
+			const selectedFile = e.target[0].files[0];
 			const fileError = checkFileIsCSV(selectedFile);
+			setBadEntries([]);
 			if (fileError) {
 				setError(fileError.message);
 			} else {
@@ -79,8 +85,11 @@ const CSVParser = () => {
 		}
 	}
 
+	console.log(badEntries);
+
 	return (
 		<form className="upload" onSubmit={handleSubmit}>
+			{badEntries.length > 0 && <InvalidEntries badEntries={badEntries}/>}
 			{ error && <div className="error">{error}</div>}
 			<h2>Upload CSV File to Import Eating Out Category</h2>
 			<div>CSV file must follow this format:

@@ -62,14 +62,16 @@ const Home = () => {
 
 	return (
 		<div className="home">
-			<div className="bills">
-				{ bills && bills.map((bill) => (
-					<div key={bill._id}>
-						{displayDate(bill.date)} | {bill.category} - {bill.subcategory}: ${displayBillAmount(bill.amount)}
-						<button onClick={handleDelete.bind(this, bill._id)}>Delete</button>
-					</div>
-				))}
-			</div>
+			{bills && (
+				<div className="bills">
+					{ bills.map((bill) => (
+						<div key={bill._id}>
+							{displayDate(bill.date)} | {bill.category} - {bill.subcategory}: ${displayBillAmount(bill.amount)}
+							<button onClick={handleDelete.bind(this, bill._id)}>Delete</button>
+						</div> 
+					))}
+				</div>
+			)}
 			<BillForm />
 			<CSVParser />
 		</div>
