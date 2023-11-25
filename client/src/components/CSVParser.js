@@ -18,7 +18,7 @@ const checkFileIsCSV = (inputFile) => {
 }
 
 const CSVParser = () => {
-	const { dispatch } = useBillsContext();
+	// const { dispatch } = useBillsContext();
 	const [ error, setError ] = useState(null);
 
 	const checkInputFile = (e) => {
@@ -47,14 +47,14 @@ const CSVParser = () => {
 				throw new Error(data.error);
 			}
 			console.log("New bill added");
-			dispatch({type: 'CREATE_BILL', payload: data});
+			// dispatch({type: 'CREATE_BILL', payload: data});
 		} catch (err) {
 			// TODO: create array to store all bad entries and print them out later
 		}
 	}
 
 	const handleSubmit = (e) => {
-		e.preventDefault();
+		// e.preventDefault();
 
 		const selectedFile = e.target[0].files[0];
 		try {
@@ -82,7 +82,7 @@ const CSVParser = () => {
 	return (
 		<form className="upload" onSubmit={handleSubmit}>
 			{ error && <div className="error">{error}</div>}
-			<h2>Upload CSV File for Mass Import For Eating Out Category</h2>
+			<h2>Upload CSV File to Import Eating Out Category</h2>
 			<div>CSV file must follow this format:
 				<ul>
 					<li>3 columns only in the following order: Date, Price, Place</li>
@@ -90,7 +90,7 @@ const CSVParser = () => {
 					<li>Date must be of the form: MM/DD/YYYY</li>
 					<li>The year must be the same for every entry</li>
 				</ul>
-				Failure to follow these formatting rules will result in weird entries in database or errors inserting into database!
+				Failure to follow these formatting rules will result in weird entries in database or errors inserting into database
 			</div>
 			<label>Upload CSV:</label>
 			<input 
