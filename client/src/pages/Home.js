@@ -12,11 +12,13 @@ import { displayDate, displayBillAmount } from "../utils/utils";
 // add spinner for loading
 const Home = () => {
 	const { bills, dispatch } = useBillsContext();
+	// TODO: dynamically set the year
+	const year = '2023';
 
 	useEffect(() => {
 		try {
 			const fetchBills = async () => {
-				const res = await fetch('http://localhost:4000/api/bills');
+				const res = await fetch(`http://localhost:4000/api/bills/${year}`);
 				const data = await res.json();
 			  
 				if (!res.ok) {
@@ -34,7 +36,7 @@ const Home = () => {
 
 	const handleDelete = async (id) => {
 		try {
-			const res = await fetch('http://localhost:4000/api/bills/' + id, {
+			const res = await fetch(`http://localhost:4000/api/bills/${year}/bill/${id}`, {
 				method: 'DELETE'
 			});
 			const data = await res.json();

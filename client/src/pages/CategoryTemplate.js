@@ -13,11 +13,13 @@ import { displayDate, displayBillAmount } from "../utils/utils";
 const CategoryTemplate = (props) => {
 	const { bills, dispatch } = useBillsContext();
 	const { category, displayCSVImporter } = props;
+	// TODO: dynamically set the year
+	const year = '2023';
 
 	useEffect(() => {
 		try {
 			const fetchBills = async () => {
-				const res = await fetch('http://localhost:4000/api/bills/' + category);
+				const res = await fetch(`http://localhost:4000/api/bills/${year}/${category}`);
 				const data = await res.json();
 				if (!res.ok) {
 					throw new Error(data.error);
@@ -34,7 +36,7 @@ const CategoryTemplate = (props) => {
 
 	const handleDelete = async (id) => {
 		try {
-			const res = await fetch('http://localhost:4000/api/bills/' + id, {
+			const res = await fetch(`http://localhost:4000/api/bills/${year}/bill/${id}`, {
 				method: 'DELETE'
 			});
 			const data = await res.json();
