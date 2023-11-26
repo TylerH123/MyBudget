@@ -20,7 +20,7 @@ app.use((req, res, next) => {
 });
 
 app.get('/', (req, res) => {
-    res.json({ 'msg': 'Welcome to API' });
+    res.json({ 'msg': 'Welcome to MyBudget API' });
 });
 
 app.use('/api/bills/', billsRoutes);

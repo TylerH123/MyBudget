@@ -22,3 +22,22 @@ describe("GET /api/bills", () => {
 	});
 });
   
+
+// test route to post a bill for owner (Tyler)
+// should return the posted bill
+describe("POST /api/bills", () => {
+	it("should create a bill for owner", async () => {
+		const res = await request(app).post("/api/bills").send({
+			owner: "Tyler",
+			category: "Food",
+			subcategory: "Grubhub",
+			date: "2023-11-21T00:00:00.000+00:00",
+			amount: 6.28,
+			description: ""
+		});
+		expect(res.statusCode).toBe(201);
+    	expect(res.body.category).toBe("Food");
+		expect(res.body.amount).toBe(6.28);
+	});
+});
+  

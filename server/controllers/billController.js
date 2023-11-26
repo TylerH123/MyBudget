@@ -68,7 +68,7 @@ const createBill = async (req, res) => {
 
     try {
         const newBill = await yrToModel['2023'].create({ owner, category, subcategory, date, amount, description });
-        res.status(200).json(newBill);
+        res.status(201).json(newBill);
     } catch (error) {
         res.status(400).json({ error: error.message });
     }
