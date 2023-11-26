@@ -1,5 +1,7 @@
 # MyBudget
 
+## Description
+
 A MERN stack application to help visualize how you spend your money each year.
 
 ## Installation
