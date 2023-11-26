@@ -3,7 +3,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 // pages & components
 import Navbar from './components/Navbar';
 import Home from './pages/Home';
-import Food from './pages/Food';
+import CategoryTemplate from './pages/CategoryTemplate';
 
 function App() {
   return (
@@ -18,7 +18,19 @@ function App() {
             />
             <Route
               path="/food"
-              element={<Food />}
+              element={<CategoryTemplate category={'Food'} displayCSVImporter={true}/>}
+            />
+            <Route
+              path="/subscriptions"
+              element={<CategoryTemplate category={'Subcsriptions'} displayCSVImporter={false}/>}
+            />
+            <Route
+              path="/utilities"
+              element={<CategoryTemplate category={'Utilities'} displayCSVImporter={false}/>}
+            />
+            <Route
+              path="/vacation"
+              element={<CategoryTemplate category={'Vacation'} displayCSVImporter={false}/>}
             />
           </Routes>
         </div>

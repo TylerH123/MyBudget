@@ -6,28 +6,18 @@ import BillForm from "../components/BillForm";
 import CSVParser from "../components/CSVParser";
 
 // utils
-import { displayDate } from "../utils/utils";
-
-const displayBillAmount = (amount) => {
-	if (amount % 100 === 0) {
-		return (amount / 100).toString() + '.00'
-	}
-	else if (amount % 10 === 0) {
-		return (amount / 100).toString() + '0'
-	}
-	return (amount / 100).toString()
-}
+import { displayDate, displayBillAmount } from "../utils/utils";
 
 // TODO:
 // add spinner for loading
-const Food = () => {
+const CategoryTemplate = (props) => {
 	const { bills, dispatch } = useBillsContext();
+	const { category, displayCSVImporter } = props;
 
 	useEffect(() => {
 		try {
 			const fetchBills = async () => {
-				console.log("fetching");
-				const res = await fetch('http://localhost:4000/api/bills');
+				const res = await fetch('http://localhost:4000/api/bills/' + category);
 				const data = await res.json();
 			  
 				if (!res.ok) {
@@ -41,7 +31,7 @@ const Food = () => {
 			console.log(error);
 		}
 		
-	}, [dispatch]); // empty dependency array to run the effect only on mount
+	}, [dispatch, category]); // empty dependency array to run the effect only on mount
 
 	const handleDelete = async (id) => {
 		try {
@@ -75,10 +65,10 @@ const Food = () => {
 					))}
 				</div>
 			)}
-			<BillForm />
-			<CSVParser />
+			<BillForm category={category}/>
+			{displayCSVImporter && <CSVParser/>} 
 		</div>
 	)
 }
 
-export default Food;
+export default CategoryTemplate;
