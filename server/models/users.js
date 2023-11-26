@@ -6,7 +6,7 @@ const userSchema = new mongoose.Schema({
     categories: {
         type: Array,
         required: true,
-		default: ['Eating out', 'Bills', 'Groceries',  'Misc', 'Subscriptions', 'Transportation', 'Vacation']
+		default: ['Food', 'Groceries',  'Misc', 'Rent', 'Subscriptions', 'Transportation', 'Utilities', 'Vacation']
     },
 	email: {
 		type: String,

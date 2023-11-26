@@ -1,6 +1,7 @@
 const express = require('express');
 const {
     getBills,
+    getBillsCategory,
     getBill,
     createBill,
     deleteBill,
@@ -12,13 +13,15 @@ const router = express.Router();
 
 router.get('/', getBills);
 
-router.get('/:id', getBill);
+router.get('/:category', getBillsCategory);
+
+router.get('/bill/:id', getBill);
 
 router.post('/', createBill);
 
-router.delete('/:id', deleteBill);
+router.patch('/bill/:id', updateBill);
 
-router.patch('/:id', updateBill);
+router.delete('/bill/:id', deleteBill);
 
 router.delete('/all', resetCollection);
 

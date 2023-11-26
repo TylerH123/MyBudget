@@ -8,7 +8,7 @@ import { convertPriceStringToInt } from "../utils/utils";
 
 const BillForm = () => {
 	const { dispatch } = useBillsContext();
-	const [ category, setCategory ] = useState({ value: "Eating out", label: "Eating out" });
+	const [ category, setCategory ] = useState({ value: "Food", label: "Food" });
 	const [ subcategory, setSubcategory ] = useState('');
 	const [ date, setDate ] = useState(new Date());
 	const [ amount, setAmount ] = useState("$0");
@@ -51,7 +51,7 @@ const BillForm = () => {
 			}
 
 			// Reset form
-			setCategory({ value: "Eating out", label: "Eating out" });
+			setCategory({ value: "Food", label: "Food" });
 			setSubcategory('');
 			setDate(new Date());
 			setAmount("$0");

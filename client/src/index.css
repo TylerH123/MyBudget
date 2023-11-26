@@ -24,12 +24,22 @@ header .container {
   padding: 10px 20px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  column-gap: 1rem;
 }
 
 header a {
   color: #333;
   text-decoration: none;
+  box-sizing: border-box;
+
+  .link {
+    border-bottom: 1px white solid;
+    border-top: 1px white solid;
+  }
+
+  .link:hover {
+    border-bottom: 1px solid black;
+  }
 }
 
 .pages{

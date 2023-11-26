@@ -7,6 +7,9 @@ const Navbar = () => {
 				<Link to="/">
 					<h1>MyBudget</h1>
 				</Link>
+				<Link to="/food">
+					<p className="link">Food</p>
+				</Link>
 			</div>
 		</header>
 	)
