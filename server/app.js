@@ -23,7 +23,7 @@ app.get('/', (req, res) => {
     res.json({ 'msg': 'Welcome to MyBudget API' });
 });
 
-app.use('/api/bills/', billsRoutes);
+app.use('/api/bills/:year/', billsRoutes);
 app.use('/api/users/', userRoutes);
 
 module.exports = app;

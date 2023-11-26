@@ -16,7 +16,7 @@ afterEach(async () => {
 // should be empty at first
 describe('GET /api/bills', () => {
 	it('should return all bills for owner', async () => {
-	  const res = await request(app).get('/api/bills');
+	  const res = await request(app).get('/api/bills/2023');
 	  expect(res.statusCode).toBe(200);
 	  expect(res.body.length).toBe(0);
 	});
@@ -28,7 +28,7 @@ let createdBillId; // Variable to store the created bill's ID
 // should return the posted bill
 describe('POST /api/bills', () => {
 	it('should create a bill for owner', async () => {
-		const res = await request(app).post('/api/bills').send({
+		const res = await request(app).post('/api/bills/2023').send({
 			owner: 'Tyler',
 			category: 'Food',
 			subcategory: 'Grubhub',
@@ -48,7 +48,7 @@ describe('POST /api/bills', () => {
 // should return the bill that was just posted
 describe('GET /api/bills/bill/:id', () => {
 	it('should get the bill for owner', async () => {
-		const res = await request(app).get(`/api/bills/bill/${createdBillId}`);
+		const res = await request(app).get(`/api/bills/2023/bill/${createdBillId}`);
 		expect(res.statusCode).toBe(200);
     	expect(res.body.category).toBe('Food');
 		expect(res.body.amount).toBe(6.28);
@@ -60,7 +60,7 @@ describe('GET /api/bills/bill/:id', () => {
 describe('GET /api/bills/bill/:id', () => {
 	it('should return 404', async () => {
 		let id = 'test_' + createdBillId
-		const res = await request(app).get(`/api/bills/bill/${id}`);
+		const res = await request(app).get(`/api/bills/2023/bill/${id}`);
 		expect(res.statusCode).toBe(404);
 	});
 });
@@ -74,7 +74,7 @@ describe('DELETE /api/bills/bill/:id', () => {
 		// Ensure that the createdBillId is defined
 		expect(createdBillId).toBeDefined();
 
-		const res = await request(app).delete(`/api/bills/bill/${createdBillId}`);
+		const res = await request(app).delete(`/api/bills/2023/bill/${createdBillId}`);
 		expect(res.statusCode).toBe(200);
 		expect(res.body.category).toBe('Food');
 		expect(res.body.amount).toBe(6.28);

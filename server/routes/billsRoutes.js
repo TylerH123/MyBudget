@@ -9,20 +9,20 @@ const {
     resetCollection
 } = require('../controllers/billController');
 
-const router = express.Router();
+const router = express.Router({ mergeParams: true });
 
-router.get('/:year', getBills);
+router.get('/', getBills);
 
-router.get('/:year/:category', getBillsByCategory);
+router.get('/:category', getBillsByCategory);
 
-router.get('/:year/bill/:id', getBill);
+router.get('/bill/:id', getBill);
 
 router.post('/', createBill);
 
-router.patch('/:year/bill/:id', updateBill);
+router.patch('/bill/:id', updateBill);
 
-router.delete('/:year/bill/:id', deleteBill);
+router.delete('/bill/:id', deleteBill);
 
-router.delete('/:year/all', resetCollection);
+router.delete('/all', resetCollection);
 
 module.exports = router;

@@ -11,7 +11,9 @@
 */
 
 const postBill = async (bill) => {
-	const res = await fetch('http://localhost:4000/api/bills/', {
+	const year = bill.date.slice(0, 4);
+	console.log(year);
+	const res = await fetch(`http://localhost:4000/api/bills/${year}`, {
 		method: 'POST',
 		body: JSON.stringify(bill),
 		headers: {

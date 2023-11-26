@@ -19,10 +19,9 @@ const checkCategoryExists = async (username, category) => {
 // Get all bills documents in collection
 const getBills = async (req, res) => {
     // authenticate signed in user
-
     const { year } = req.params;
     if (!year || !(year in yrToModel)) {
-        return res.status(404).json({error: 'Year not provided or year does not exist'})
+        return res.status(404).json({error: 'Year not provided or year does not exist'});
     }
 
     // get all bills for owner
@@ -36,17 +35,16 @@ const getBillsByCategory = async (req, res) => {
 
     const { category, year } = req.params;
     
-    
     if (!checkCategoryExists) {
-        return res.status(404).json({error: 'Category does not exist'})
+        return res.status(404).json({error: 'Category does not exist'});
     }
     
     if (!year || !(year in yrToModel)) {
-        return res.status(404).json({error: 'Year not provided or year does not exist'})
+        return res.status(404).json({error: 'Year not provided or year does not exist'});
     }
 
     // get all bills for owner
-    const bills = await yrToModel['2023'].find({owner: 'Tyler', category: category}).sort({ date: -1 });
+    const bills = await yrToModel[year].find({owner: 'Tyler', category: category}).sort({ date: -1 });
     res.status(200).json(bills);
 }
 
@@ -60,12 +58,12 @@ const getBill = async (req, res) => {
     }
     
     if (!year || !(year in yrToModel)) {
-        return res.status(404).json({error: 'Year not provided or year does not exist'})
+        return res.status(404).json({error: 'Year not provided or year does not exist'});
     }
 
     // authenticate signed in user
 
-    const bills = await yrToModel['2023'].findById(id);
+    const bills = await yrToModel[year].findById(id);
     if (!bills) {
         return res.status(404).json({error: 'No such bill'});
     }
@@ -74,20 +72,27 @@ const getBill = async (req, res) => {
 
 // Create new bill document in collection
 const createBill = async (req, res) => {
+    const { year } = req.params;
+    
+    if (!year || !(year in yrToModel)) {
+        return res.status(404).json({error: 'Year not provided or year does not exist'});
+    }
+
     const { owner, category, subcategory, date, amount, description } = req.body;
 
     if (!checkCategoryExists) {
-        return res.status(404).json({error: 'Category does not exist'})
+        return res.status(404).json({error: 'Category does not exist'});
     }
 
     try {
-        const newBill = await yrToModel['2023'].create({ owner, category, subcategory, date, amount, description });
+        const newBill = await yrToModel[year].create({ owner, category, subcategory, date, amount, description });
         res.status(201).json(newBill);
     } catch (error) {
         res.status(400).json({ error: error.message });
     }
 }
 
+// Delete a bill in collection
 const deleteBill = async (req, res) => {
     const { id, year } = req.params;
 
@@ -102,7 +107,7 @@ const deleteBill = async (req, res) => {
 
     // authenticate signed in user
 
-    const bills = await yrToModel['2023'].findOneAndDelete({_id: id});
+    const bills = await yrToModel[year].findOneAndDelete({_id: id});
     if (!bills) {
         return res.status(404).json({error: 'No such bill'});
     }
@@ -118,7 +123,7 @@ const updateBill = async (req, res) => {
     }
 
     if (!year || !(year in yrToModel)) {
-        return res.status(404).json({error: 'Year not provided or year does not exist'})
+        return res.status(404).json({error: 'Year not provided or year does not exist'});
     }
 
     // authenticate signed in user
@@ -126,18 +131,19 @@ const updateBill = async (req, res) => {
     // validate req body - make sure signed in user is the same as the owner - dont let updates to owner
     console.log(req.body);
 
-    const bills = await yrToModel['2023'].findOneAndUpdate({_id: id}, {...req.body});
+    const bills = await yrToModel[year].findOneAndUpdate({_id: id}, {...req.body});
     if (!bills) {
-        return res.status(404).json({error: 'No such bill'})
+        return res.status(404).json({error: 'No such bill'});
     }
     res.status(200).json(bills);
 }
 
+// Empty out a collection for year
 const resetCollection = async (req, res) => {
     const { year } = req.params;
 
     if (!year || !(year in yrToModel)) {
-        return res.status(404).json({error: 'Year not provided or year does not exist'})
+        return res.status(404).json({error: 'Year not provided or year does not exist'});
     }
 
     const { pass } = req.body;
