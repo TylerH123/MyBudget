@@ -12,6 +12,9 @@ const displayBillAmount = (amount) => {
 	if (amount % 100 === 0) {
 		return (amount / 100).toString() + '.00'
 	}
+	else if (amount % 10 === 0) {
+		return (amount / 100).toString() + '0'
+	}
 	return (amount / 100).toString()
 }
 

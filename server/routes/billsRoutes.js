@@ -10,16 +10,16 @@ const {
 
 const router = express.Router();
 
-router.get('/bills/', getBills);
+router.get('/', getBills);
 
-router.get('/bill/:id', getBill);
+router.get('/:id', getBill);
 
-router.post('/bills/', createBill);
+router.post('/', createBill);
 
-router.delete('/bill/:id', deleteBill);
+router.delete('/:id', deleteBill);
 
-router.patch('/bill/:id', updateBill);
+router.patch('/:id', updateBill);
 
-router.delete('/bills/all', resetCollection);
+router.delete('/all', resetCollection);
 
 module.exports = router;

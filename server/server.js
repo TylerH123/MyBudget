@@ -2,7 +2,8 @@
 const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
-const myBudgetRoutes = require('./routes/billsRoutes');
+const billsRoutes = require('./routes/billsRoutes');
+const userRoutes = require('./routes/userRoutes');
 require('dotenv').config();
 
 const app = express();
@@ -26,7 +27,8 @@ app.get('/', (req, res) => {
     res.json({ 'msg': 'Welcome to API' });
 });
 
-app.use('/api/', myBudgetRoutes);
+app.use('/api/bills/', billsRoutes);
+app.use('/api/users/', userRoutes);
 
 // Define the MongoDB Atlas connection UR
 // Start listening once db connection is established

@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const SALT_WORK_FACTOR = 10;
 
-const userScheme = new mongoose.Schema({
+const userSchema = new mongoose.Schema({
     categories: {
         type: Array,
         required: true,
@@ -17,16 +17,16 @@ const userScheme = new mongoose.Schema({
         match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, 'Please fill a valid email address']
 	},
     username: {
-        type: string,
+        type: String,
         required: true
     },
 	password: {
-        type: string,
+        type: String,
         required: true
     },
 });
 
-const userModel = mongoose.model('Users', userScheme);
+const userModel = mongoose.model('Users', userSchema, 'Users');
 
 // Export the models
 module.exports = {

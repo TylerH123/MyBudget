@@ -84,9 +84,7 @@ const CSVParser = () => {
 			setError(err.message);
 		}
 	}
-
-	console.log(badEntries);
-
+	
 	return (
 		<form className="upload" onSubmit={handleSubmit}>
 			{badEntries.length > 0 && <InvalidEntries badEntries={badEntries}/>}

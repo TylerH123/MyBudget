@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useBillsContext } from "../hooks/useBillsContext";
+import Select from 'react-select';
 
 // utils
 import { postBill } from "../utils/apiUtils";
@@ -18,6 +19,12 @@ const BillForm = () => {
 	const handleTouch = () => {
 		setTouched(true);
 	}
+
+	useEffect(() => {
+		const getCategories = async () => {
+			// const categories = await fetch('http://localhost:4000/api/users/categories')
+		}
+	}, []);
 
 	// TODO:
 	// authenticate user
