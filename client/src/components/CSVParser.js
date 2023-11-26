@@ -84,13 +84,13 @@ const CSVParser = () => {
 			setError(err.message);
 		}
 	}
-	
+
 	return (
 		<form className="upload" onSubmit={handleSubmit}>
 			{badEntries.length > 0 && <InvalidEntries badEntries={badEntries}/>}
 			{ error && <div className="error">{error}</div>}
 			<h2>Upload CSV File to Import Eating Out Category</h2>
-			<div>CSV file must follow this format:
+			<div>CSV File Format Requirements:
 				<ul>
 					<li>3 columns only in the following order: Date, Price, Place</li>
 					<li>Column name must be spelled exactly as shown above</li>

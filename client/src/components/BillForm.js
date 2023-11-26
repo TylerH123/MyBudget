@@ -68,8 +68,6 @@ const BillForm = () => {
 	const validateAmount = () => {
 		
 	}
-	
-	console.log(category);
 
 	return (
 		<form className="create" onSubmit={handleSubmit}>
