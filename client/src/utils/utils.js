@@ -39,4 +39,20 @@ const displayDate = (date) => {
 	return dateString;
 }
 
-export { convertPriceStringToInt, displayDate };
+/**
+ * Converts amount intger into a string with format "$X.XX".
+ *
+ * @param {Number} amount - The amount to be converted.
+ * @returns {string} - The string representation of the amount.
+*/
+const displayBillAmount = (amount) => {
+	if (amount % 100 === 0) {
+		return (amount / 100).toString() + '.00'
+	}
+	else if (amount % 10 === 0) {
+		return (amount / 100).toString() + '0'
+	}
+	return (amount / 100).toString()
+}
+
+export { convertPriceStringToInt, displayDate, displayBillAmount };

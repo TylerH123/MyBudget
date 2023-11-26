@@ -6,17 +6,7 @@ import BillForm from "../components/BillForm";
 import CSVParser from "../components/CSVParser";
 
 // utils
-import { displayDate } from "../utils/utils";
-
-const displayBillAmount = (amount) => {
-	if (amount % 100 === 0) {
-		return (amount / 100).toString() + '.00'
-	}
-	else if (amount % 10 === 0) {
-		return (amount / 100).toString() + '0'
-	}
-	return (amount / 100).toString()
-}
+import { displayDate, displayBillAmount } from "../utils/utils";
 
 // TODO:
 // add spinner for loading
@@ -26,7 +16,6 @@ const Home = () => {
 	useEffect(() => {
 		try {
 			const fetchBills = async () => {
-				console.log("fetching");
 				const res = await fetch('http://localhost:4000/api/bills');
 				const data = await res.json();
 			  
@@ -75,8 +64,8 @@ const Home = () => {
 					))}
 				</div>
 			)}
-			<BillForm />
-			<CSVParser />
+			<BillForm category={'Food'}/>
+			<CSVParser/>
 		</div>
 	)
 }
