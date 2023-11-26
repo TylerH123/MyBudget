@@ -1,34 +1,10 @@
 // Import the required modules
-const express = require('express');
-const cors = require('cors');
 const mongoose = require('mongoose');
-const billsRoutes = require('./routes/billsRoutes');
-const userRoutes = require('./routes/userRoutes');
 require('dotenv').config();
 
-const app = express();
-const port = process.env.PORT;
+const app = require('./app');
+const port = process.env.PORT || 4000;
 const uri = process.env.MONGODB_URI;
-
-const corsOptions = {
-    origin: ['http://localhost:3000'],
-    optionsSuccessStatus: 200
-}
-
-app.use(cors(corsOptions));
-app.use(express.json());
-
-app.use((req, res, next) => {
-    console.log(req.path, req.method);
-    next();
-});
-
-app.get('/', (req, res) => {
-    res.json({ 'msg': 'Welcome to API' });
-});
-
-app.use('/api/bills/', billsRoutes);
-app.use('/api/users/', userRoutes);
 
 // Define the MongoDB Atlas connection UR
 // Start listening once db connection is established
@@ -38,6 +14,6 @@ mongoose.connect(uri, {
 }).then(() => {
     console.log("DB connected");
     app.listen(port, () => {
-        console.log(`listening on port ${port}`);
+        console.log(`Server listening on port ${port}`);
     });
 });
