@@ -45,7 +45,6 @@ const BillForm = (props) => {
 
 	// TODO:
 	// authenticate user
-	// change input for category to be dropdown list
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 
@@ -121,8 +120,7 @@ const BillForm = (props) => {
 
 			<label>Bill Description:</label>
 			<textarea 
-				rows="4"
-				cols="50"
+				rows="2"
 				onChange={(e) => setDescription(e.target.value)}
 				value={description}
 			/>

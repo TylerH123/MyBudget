@@ -19,7 +19,6 @@ const CategoryTemplate = (props) => {
 			const fetchBills = async () => {
 				const res = await fetch('http://localhost:4000/api/bills/' + category);
 				const data = await res.json();
-			  
 				if (!res.ok) {
 					throw new Error(data.error);
 				}
