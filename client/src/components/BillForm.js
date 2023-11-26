@@ -8,21 +8,29 @@ import { convertPriceStringToInt } from "../utils/utils";
 
 const BillForm = () => {
 	const { dispatch } = useBillsContext();
-	const [ category, setCategory ] = useState('');
-	const [ touched, setTouched ] = useState(false);
+	const [ category, setCategory ] = useState({ value: "Eating out", label: "Eating out" });
 	const [ subcategory, setSubcategory ] = useState('');
 	const [ date, setDate ] = useState(new Date());
 	const [ amount, setAmount ] = useState("$0");
 	const [ description, setDescription ] = useState('');
 	const [ error, setError ] = useState(null);
-
-	const handleTouch = () => {
-		setTouched(true);
-	}
+	const [ options, setOptions ] = useState([]);
 
 	useEffect(() => {
-		const getCategories = async () => {
-			// const categories = await fetch('http://localhost:4000/api/users/categories')
+		try {
+			const getCategories = async () => {
+				const res = await fetch('http://localhost:4000/api/users/categories/options');
+				const data = await res.json();
+
+				if (!res.ok) {
+					throw new Error(data.error)
+				}
+
+				setOptions(data);
+			}
+			getCategories();
+		} catch (err) {
+			setError(err.message);
 		}
 	}, []);
 
@@ -34,7 +42,7 @@ const BillForm = () => {
 
 		const owner = 'Tyler';
 		const billAmount = convertPriceStringToInt(amount);
-		const bill = { owner, category, subcategory, date, amount: billAmount, description };
+		const bill = { owner, category: category.value, subcategory, date, amount: billAmount, description };
 
 		try {
 			const [ res, data ] = await postBill(bill);
@@ -43,7 +51,7 @@ const BillForm = () => {
 			}
 
 			// Reset form
-			setCategory('');
+			setCategory({ value: "Eating out", label: "Eating out" });
 			setSubcategory('');
 			setDate(new Date());
 			setAmount("$0");
@@ -61,19 +69,21 @@ const BillForm = () => {
 		
 	}
 	
+	console.log(category);
+
 	return (
 		<form className="create" onSubmit={handleSubmit}>
 			{error && <div className="error">{error}</div>}
 			<h2>Add a New Bill</h2>
 
 			<label>Bill Category:</label>
-			<input 
-				type="text"
-				onChange={(e) => setCategory(e.target.value)}
-				value={category}
-				className={touched && category === '' ? 'error' : ''}
-				onClick={handleTouch}
-				required
+			<Select
+				className="react-select"
+				defaultValue={category}
+				onChange={setCategory}
+				options={options}
+				isSearchable={true}
+				placeholder="Select the cateogry for this bill"
 			/>
 
 			<label>Bill Subcategory:</label>

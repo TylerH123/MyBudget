@@ -13,6 +13,16 @@ const getCategories = async (req, res) => {
     res.status(200).json(categories);
 }
 
+const getCategoriesAsOptions = async (req, res) => {
+    const query = await userModel.findOne({ username: 'Tyler' }, { _id: 0, categories: 1 });
+    let options = [];
+    query.categories.forEach((item) => {
+        options.push({value: item, label: item});
+    });
+
+    res.status(200).json(options);
+}
+
 // Create user and insert into db
 const insertUser = async (req, res) => {
     const { email, username, password } = req.body;
@@ -28,5 +38,6 @@ const insertUser = async (req, res) => {
 // Export the functions
 module.exports = {
     getCategories,
+    getCategoriesAsOptions,
 	insertUser
 };
