@@ -6,6 +6,14 @@ import Select from 'react-select';
 import { postBill } from "../utils/apiUtils";
 import { convertPriceStringToInt } from "../utils/utils";
 
+const setCategoryValue = (category) => {
+	if (!category) {
+		return { value: 'Food', label: 'Food' }
+	} else {
+		return { value: category, label: category }
+	}
+}
+
 const BillForm = (props) => {
 	const { dispatch } = useBillsContext();
 	const [ category, setCategory ] = useState(props.category);
@@ -16,13 +24,6 @@ const BillForm = (props) => {
 	const [ error, setError ] = useState(null);
 	const [ options, setOptions ] = useState([]);
 
-	const setDefaultCategory = () => {
-		if (!category) {
-			return { value: 'Food', label: 'Food' }
-		} else {
-			return { value: category, label: category }
-		}
-	}
 
 	useEffect(() => {
 		try {
@@ -37,11 +38,19 @@ const BillForm = (props) => {
 				setOptions(data);
 			}
 			getCategories();
-			setDefaultCategory();
 		} catch (err) {
 			setError(err.message);
 		}
 	}, []);
+
+	// useEffect(() => {
+	// 	setCategory(props.category);
+	// 	console.log(category);
+	// }, [props.category]);
+
+	useEffect(() => {
+		setCategory(setCategoryValue(props.category));
+	}, [props.category])
 
 	// TODO:
 	// authenticate user
@@ -84,7 +93,7 @@ const BillForm = (props) => {
 			<label>Bill Category:</label>
 			<Select
 				className="react-select"
-				defaultValue={setDefaultCategory}
+				value={category}
 				onChange={setCategory}
 				options={options}
 				isSearchable={true}
