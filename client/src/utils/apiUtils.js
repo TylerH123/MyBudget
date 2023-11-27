@@ -8,7 +8,7 @@ const getBills = async (year) => {
 	const res = await fetch(`http://localhost:4000/api/bills/${year}`);
 	const data = await res.json();
 
-	return [res, data]
+	return [res, data];
 }
 
 /**
@@ -22,7 +22,7 @@ const getBillsByCategory = async (year, category) => {
 	const res = await fetch(`http://localhost:4000/api/bills/${year}/${category}`);
 	const data = await res.json();
 
-	return [res, data]
+	return [res, data];
 }
 
 /**
@@ -64,7 +64,7 @@ const deleteBill = async (year, id) => {
 	});
 	const data = await res.json();
 
-	return [res, data]
+	return [res, data];
 }
 
 // ================User Routes===================

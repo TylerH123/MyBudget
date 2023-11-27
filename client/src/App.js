@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Home from './pages/Home';
 import CategoryTemplate from './pages/CategoryTemplate';
+import Food from './pages/Food';
 
 function App() {
   return (
@@ -18,19 +19,19 @@ function App() {
             />
             <Route
               path="/food"
-              element={<CategoryTemplate category={'Food'} displayCSVImporter={true}/>}
+              element={<Food />}
             />
             <Route
               path="/subscriptions"
-              element={<CategoryTemplate category={'Subscriptions'} displayCSVImporter={false}/>}
+              element={<CategoryTemplate category={'Subscriptions'}/>}
             />
             <Route
               path="/utilities"
-              element={<CategoryTemplate category={'Utilities'} displayCSVImporter={false}/>}
+              element={<CategoryTemplate category={'Utilities'}/>}
             />
             <Route
               path="/vacation"
-              element={<CategoryTemplate category={'Vacation'} displayCSVImporter={false}/>}
+              element={<CategoryTemplate category={'Vacation'}/>}
             />
           </Routes>
         </div>

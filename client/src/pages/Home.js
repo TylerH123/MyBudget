@@ -19,7 +19,7 @@ const Home = () => {
 	useEffect(() => {
 		try {
 			const fetchBills = async () => {
-				const [ res, data ] = getBills(year);
+				const [ res, data ] = await getBills(year);
 				if (!res.ok) {
 					throw new Error(data.error);
 				}
@@ -34,7 +34,7 @@ const Home = () => {
 
 	const handleDelete = async (id) => {
 		try {
-			const [ res, data ] = deleteBill(year, id);
+			const [ res, data ] = await deleteBill(year, id);
 			if (!res.ok) {
 				throw new Error(data.error);
 			}
