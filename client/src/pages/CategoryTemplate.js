@@ -3,7 +3,6 @@ import { useBillsContext } from "../hooks/useBillsContext";
 
 // components
 import BillForm from "../components/BillForm";
-import CSVParser from "../components/CSVParser";
 
 // utils
 import { getBillsByCategory, deleteBill } from "../utils/apiUtils";
@@ -13,7 +12,7 @@ import { displayDate, displayBillAmount } from "../utils/utils";
 // add spinner for loading
 const CategoryTemplate = (props) => {
 	const { bills, dispatch } = useBillsContext();
-	const { category, displayCSVImporter } = props;
+	const { category } = props;
 	// TODO: dynamically set the year
 	const year = '2023';
 
@@ -35,7 +34,7 @@ const CategoryTemplate = (props) => {
 
 	const handleDelete = async (id) => {
 		try {
-			const [ res, data ] = deleteBill(year, id);
+			const [ res, data ] = await deleteBill(year, id);
 			if (!res.ok) {
 				throw new Error(data.error);
 			}
@@ -63,7 +62,7 @@ const CategoryTemplate = (props) => {
 				</div>
 			)}
 			<BillForm category={category}/>
-			{displayCSVImporter && <CSVParser/>} 
+			{props.CSVParser}
 		</div>
 	)
 }
