@@ -43,11 +43,6 @@ const BillForm = (props) => {
 		}
 	}, []);
 
-	// useEffect(() => {
-	// 	setCategory(props.category);
-	// 	console.log(category);
-	// }, [props.category]);
-
 	useEffect(() => {
 		setCategory(setCategoryValue(props.category));
 	}, [props.category])
