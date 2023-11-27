@@ -1,7 +1,7 @@
 const express = require('express');
 const {
     getBills,
-    getBillsCategory,
+    getBillsByCategory,
     getBill,
     createBill,
     deleteBill,
@@ -9,11 +9,11 @@ const {
     resetCollection
 } = require('../controllers/billController');
 
-const router = express.Router();
+const router = express.Router({ mergeParams: true });
 
 router.get('/', getBills);
 
-router.get('/:category', getBillsCategory);
+router.get('/:category', getBillsByCategory);
 
 router.get('/bill/:id', getBill);
 

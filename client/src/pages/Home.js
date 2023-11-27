@@ -6,19 +6,20 @@ import BillForm from "../components/BillForm";
 import CSVParser from "../components/CSVParser";
 
 // utils
+import { getBills, deleteBill } from "../utils/apiUtils";
 import { displayDate, displayBillAmount } from "../utils/utils";
 
 // TODO:
 // add spinner for loading
 const Home = () => {
 	const { bills, dispatch } = useBillsContext();
+	// TODO: dynamically set the year
+	const year = '2023';
 
 	useEffect(() => {
 		try {
 			const fetchBills = async () => {
-				const res = await fetch('http://localhost:4000/api/bills');
-				const data = await res.json();
-			  
+				const [ res, data ] = getBills(year);
 				if (!res.ok) {
 					throw new Error(data.error);
 				}
@@ -29,15 +30,11 @@ const Home = () => {
 		} catch (error) {
 			console.log(error);
 		}
-		
-	}, [dispatch]); // empty dependency array to run the effect only on mount
+	}, [dispatch, year]); // empty dependency array to run the effect only on mount
 
 	const handleDelete = async (id) => {
 		try {
-			const res = await fetch('http://localhost:4000/api/bills/' + id, {
-				method: 'DELETE'
-			});
-			const data = await res.json();
+			const [ res, data ] = deleteBill(year, id);
 			if (!res.ok) {
 				throw new Error(data.error);
 			}

@@ -3,8 +3,16 @@ import { useBillsContext } from "../hooks/useBillsContext";
 import Select from 'react-select';
 
 // utils
-import { postBill } from "../utils/apiUtils";
+import { postBill, getCategoriesForUser } from "../utils/apiUtils";
 import { convertPriceStringToInt } from "../utils/utils";
+
+const setCategoryValue = (category) => {
+	if (!category) {
+		return { value: 'Food', label: 'Food' }
+	} else {
+		return { value: category, label: category }
+	}
+}
 
 const BillForm = (props) => {
 	const { dispatch } = useBillsContext();
@@ -16,19 +24,11 @@ const BillForm = (props) => {
 	const [ error, setError ] = useState(null);
 	const [ options, setOptions ] = useState([]);
 
-	const setDefaultCategory = () => {
-		if (!category) {
-			return { value: 'Food', label: 'Food' }
-		} else {
-			return { value: category, label: category }
-		}
-	}
 
 	useEffect(() => {
 		try {
 			const getCategories = async () => {
-				const res = await fetch('http://localhost:4000/api/users/categories/options');
-				const data = await res.json();
+				const [ res, data ] = await getCategoriesForUser();
 
 				if (!res.ok) {
 					throw new Error(data.error)
@@ -37,11 +37,14 @@ const BillForm = (props) => {
 				setOptions(data);
 			}
 			getCategories();
-			setDefaultCategory();
 		} catch (err) {
 			setError(err.message);
 		}
 	}, []);
+
+	useEffect(() => {
+		setCategory(setCategoryValue(props.category));
+	}, [props.category])
 
 	// TODO:
 	// authenticate user
@@ -84,7 +87,7 @@ const BillForm = (props) => {
 			<label>Bill Category:</label>
 			<Select
 				className="react-select"
-				defaultValue={setDefaultCategory}
+				value={category}
 				onChange={setCategory}
 				options={options}
 				isSearchable={true}

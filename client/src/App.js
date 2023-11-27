@@ -22,7 +22,7 @@ function App() {
             />
             <Route
               path="/subscriptions"
-              element={<CategoryTemplate category={'Subcsriptions'} displayCSVImporter={false}/>}
+              element={<CategoryTemplate category={'Subscriptions'} displayCSVImporter={false}/>}
             />
             <Route
               path="/utilities"

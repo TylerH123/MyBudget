@@ -29,7 +29,7 @@ const insertUser = async (req, res) => {
 
     try {
         await userModel.create({ email, username, password });
-        res.status(200).json({ message: "User successfully created" });
+        res.status(201).json({ message: "User successfully created" });
     } catch (error) {
         res.status(400).json({ error: error.message });
     }
