@@ -3,7 +3,7 @@ import { useBillsContext } from "../hooks/useBillsContext";
 import Select from 'react-select';
 
 // utils
-import { postBill } from "../utils/apiUtils";
+import { postBill, getCategoriesForUser } from "../utils/apiUtils";
 import { convertPriceStringToInt } from "../utils/utils";
 
 const setCategoryValue = (category) => {
@@ -28,8 +28,7 @@ const BillForm = (props) => {
 	useEffect(() => {
 		try {
 			const getCategories = async () => {
-				const res = await fetch('http://localhost:4000/api/users/categories/options');
-				const data = await res.json();
+				const [ res, data ] = await getCategoriesForUser();
 
 				if (!res.ok) {
 					throw new Error(data.error)
