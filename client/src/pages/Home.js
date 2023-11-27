@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useBillsContext } from "../hooks/useBillsContext";
+import { Chart } from 'react-google-charts';
 
 // components
 import BillForm from "../components/BillForm";
@@ -8,6 +9,19 @@ import CSVParser from "../components/CSVParser";
 // utils
 import { getBills, deleteBill } from "../utils/apiUtils";
 import { displayDate, displayBillAmount } from "../utils/utils";
+
+const data = [
+	["Task", "Hours per Day"],
+	["Work", 11],
+	["Eat", 2],
+	["Commute", 2],
+	["Watch TV", 2],
+	["Sleep", 7],
+];
+  
+const options = {
+	title: "My Daily Activities",
+};
 
 // TODO:
 // add spinner for loading
@@ -61,8 +75,16 @@ const Home = () => {
 					))}
 				</div>
 			)}
-			<BillForm category={'Food'}/>
-			<CSVParser/>
+
+			<Chart
+				chartType="PieChart"
+				data={data}
+				options={options}
+				width={"50%"}
+				height={"200px"}
+			/>
+			{/* <BillForm category={'Food'}/>
+			<CSVParser/> */}
 		</div>
 	)
 }
