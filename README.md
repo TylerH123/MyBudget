@@ -8,7 +8,7 @@ A MERN stack application to help visualize how you spend your money each year.
 
 Before you begin, ensure you have met the following requirements:
 
-- Node.js installed
+- Node.js installed (v20.10.0)
 - MongoDB Atlas account and connection URI
 - Git (optional but recommended)
 
