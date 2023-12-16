@@ -2,7 +2,7 @@ const bcrypt = require('bcrypt');
 const validator = require('validator');
 const { userModel } = require('../models/userModel');
 
-const validate = async (email, password) => {
+const validate = (email, password) => {
 	if (!email || !password) {
 		throw Error('All fields must be filled in');
 	}

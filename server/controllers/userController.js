@@ -1,5 +1,11 @@
 const { userModel } = require('../models/userModel');
 const authService = require('../services/authService');
+const jwt = require('jsonwebtoken')
+
+const createToken = (_id) => {
+    console.log(process.env.SECRET);
+    return jwt.sign({ _id }, process.env.SECRET, { expiresIn: '30d' });
+}
 
 // TODO: authentication
 
@@ -9,7 +15,8 @@ const signupUser = async (req, res) => {
 
     try {
         const user = await authService.signup(email, password);
-        res.status(201).json({ email, user });
+        const token = createToken(user._id);
+        res.status(201).json({ email, token });
     } catch (error) {
         res.status(400).json({ error: error.message });
     }
