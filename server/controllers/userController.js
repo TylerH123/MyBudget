@@ -1,6 +1,25 @@
-const { userModel } = require('../models/users');
+const { userModel } = require('../models/userModel');
+const authService = require('../services/authService');
 
 // TODO: authentication
+
+// Sign up user
+const signupUser = async (req, res) => {
+    const { email, password } = req.body;
+
+    try {
+        const user = await authService.signup(email, password);
+        res.status(200).json({ email, user });
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+}
+
+// Login user
+const loginUser = async (req, res) => {
+    res.json({msg: 'Logged in user'}); 
+}
+
 
 // Get all bills documents in collection
 const getCategories = async (req, res) => {
@@ -37,6 +56,8 @@ const insertUser = async (req, res) => {
 
 // Export the functions
 module.exports = {
+    loginUser,
+    signupUser,
     getCategories,
     getCategoriesAsOptions,
 	insertUser
