@@ -9,7 +9,7 @@ const signupUser = async (req, res) => {
 
     try {
         const user = await authService.signup(email, password);
-        res.status(200).json({ email, user });
+        res.status(201).json({ email, user });
     } catch (error) {
         res.status(400).json({ error: error.message });
     }
@@ -42,23 +42,10 @@ const getCategoriesAsOptions = async (req, res) => {
     res.status(200).json(options);
 }
 
-// Create user and insert into db
-const insertUser = async (req, res) => {
-    const { email, username, password } = req.body;
-
-    try {
-        await userModel.create({ email, username, password });
-        res.status(201).json({ message: "User successfully created" });
-    } catch (error) {
-        res.status(400).json({ error: error.message });
-    }
-}
-
 // Export the functions
 module.exports = {
     loginUser,
     signupUser,
     getCategories,
-    getCategoriesAsOptions,
-	insertUser
+    getCategoriesAsOptions
 };

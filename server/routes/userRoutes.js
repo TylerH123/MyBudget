@@ -1,10 +1,9 @@
 const express = require('express');
 const {
-	loginUser,
 	signupUser,
+	loginUser,
     getCategories,
-	getCategoriesAsOptions,
-	insertUser
+	getCategoriesAsOptions
 } = require('../controllers/userController');
 
 const router = express.Router();
@@ -16,7 +15,5 @@ router.post('/login', loginUser);
 router.get('/categories', getCategories);
 
 router.get('/categories/options', getCategoriesAsOptions);
-
-router.post('/create', insertUser);
 
 module.exports = router;
