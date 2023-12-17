@@ -30,6 +30,26 @@ const signup = async (email, password) => {
 	return user;
 }
 
+const login = async (email, password) => {
+	if (!email || !password) {
+		throw Error('All fields must be filled');
+	}
+
+	const user = await userModel.findOne({ email });
+	if (!user) {
+		throw Error('User with this email does not exist');
+	}
+
+	const match = await bcrypt.compare(password, user.password);
+
+	if (!match) {
+		throw Error('Invalid login credentials');
+	}
+
+	return user;
+}
+
 module.exports = { 
-	signup
+	signup,
+	login
 };
