@@ -20,5 +20,8 @@
     "mongoose": "^7.6.3",
     "supertest": "^6.3.3",
     "validator": "^13.11.0"
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.3"
   }
 }
