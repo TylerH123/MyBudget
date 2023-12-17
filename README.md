@@ -38,6 +38,7 @@ npm install
 Create a .env file in the server directory with the following content:
 - MONGODB_URI=<your_mongodb_uri>
 - PORT=4000
+- SECRET=<string_to_sign_JWT>
 
 ### Start the server:
 ```bash
