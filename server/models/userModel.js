@@ -1,6 +1,4 @@
 const mongoose = require('mongoose');
-const bcrypt = require('bcrypt');
-const SALT_WORK_FACTOR = 10;
 
 const userSchema = new mongoose.Schema({
     categories: {
@@ -16,10 +14,6 @@ const userSchema = new mongoose.Schema({
         required: 'Email address is required',
         match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, 'Please fill a valid email address']
 	},
-    username: {
-        type: String,
-        required: true
-    },
 	password: {
         type: String,
         required: true

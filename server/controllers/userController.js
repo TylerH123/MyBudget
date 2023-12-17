@@ -1,6 +1,40 @@
-const { userModel } = require('../models/users');
+const { userModel } = require('../models/userModel');
+const authService = require('../services/authService');
+const jwt = require('jsonwebtoken')
+
+const createToken = (_id) => {
+    return jwt.sign({ _id }, process.env.SECRET, { expiresIn: '30d' });
+}
 
 // TODO: authentication
+
+// Sign up user
+const signupUser = async (req, res) => {
+    const { email, password } = req.body;
+
+    try {
+        const user = await authService.signup(email, password);
+        const token = createToken(user._id);
+        res.status(201).json({ email, token });
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+}
+
+// Login user
+const loginUser = async (req, res) => {
+    const { email, password } = req.body;
+
+    try {
+        const user = await authService.login(email, password);
+        const token = createToken(user._id);
+
+        res.status(200).json({ email, token });
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+}
+
 
 // Get all bills documents in collection
 const getCategories = async (req, res) => {
@@ -23,21 +57,10 @@ const getCategoriesAsOptions = async (req, res) => {
     res.status(200).json(options);
 }
 
-// Create user and insert into db
-const insertUser = async (req, res) => {
-    const { email, username, password } = req.body;
-
-    try {
-        await userModel.create({ email, username, password });
-        res.status(201).json({ message: "User successfully created" });
-    } catch (error) {
-        res.status(400).json({ error: error.message });
-    }
-}
-
 // Export the functions
 module.exports = {
+    loginUser,
+    signupUser,
     getCategories,
-    getCategoriesAsOptions,
-	insertUser
+    getCategoriesAsOptions
 };
