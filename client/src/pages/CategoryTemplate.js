@@ -1,12 +1,12 @@
-import { useEffect } from "react";
-import { useBillsContext } from "../hooks/useBillsContext";
+import { useEffect } from 'react';
+import { useBillsContext } from '../hooks/useBillsContext';
 
 // components
-import BillForm from "../components/BillForm";
+import BillForm from '../components/AddBillForm';
 
 // utils
-import { getBillsByCategory, deleteBill } from "../utils/apiUtils";
-import { displayDate, displayBillAmount } from "../utils/utils";
+import { getBillsByCategory, deleteBill } from '../utils/apiUtils';
+import { displayDate, displayBillAmount } from '../utils/utils';
 
 // TODO:
 // add spinner for loading

@@ -1,13 +1,13 @@
-import { useState } from "react";
+import { useState } from 'react';
 // import { useBillsContext } from "../hooks/useBillsContext";
 import Papa from 'papaparse';
 
 // components
-import InvalidEntries from "./InvalidEntries";
+import InvalidEntries from './InvalidEntries';
 
 // utils
-import { postBill } from "../utils/apiUtils";
-import { convertPriceStringToInt } from "../utils/utils";
+import { postBill } from '../utils/apiUtils';
+import { convertPriceStringToInt } from '../utils/utils';
 
 const checkFileIsCSV = (inputFile) => {
 	if (!inputFile) {
@@ -50,7 +50,7 @@ const CSVParser = () => {
 			if (!res.ok) {
 				throw new Error(data.error);
 			}
-			console.log("New bill added");
+			console.log('New bill added');
 			// dispatch({type: 'CREATE_BILL', payload: data});
 		} catch (err) {
 			// TODO: create array to store all bad entries and print them out later
@@ -88,7 +88,7 @@ const CSVParser = () => {
 	return (
 		<form className="upload" onSubmit={handleSubmit}>
 			{badEntries.length > 0 && <InvalidEntries badEntries={badEntries}/>}
-			{ error && <div className="error">{error}</div>}
+			{error && <div className="error">{error}</div>}
 			<h2>Upload CSV File to Import Food Category</h2>
 			<div>CSV File Format Requirements:
 				<ul>

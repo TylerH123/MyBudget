@@ -1,10 +1,10 @@
-import { useEffect, useState } from "react";
-import { useBillsContext } from "../hooks/useBillsContext";
+import { useEffect, useState } from 'react';
+import { useBillsContext } from '../hooks/useBillsContext';
 import Select from 'react-select';
 
 // utils
-import { postBill, getCategoriesForUser } from "../utils/apiUtils";
-import { convertPriceStringToInt } from "../utils/utils";
+import { postBill, getCategoriesForUser } from '../utils/apiUtils';
+import { convertPriceStringToInt } from '../utils/utils';
 
 const setCategoryValue = (category) => {
 	if (!category) {

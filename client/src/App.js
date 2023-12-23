@@ -2,9 +2,13 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 // pages & components
 import Navbar from './components/Navbar';
+
 import Home from './pages/Home';
+import Signup from './pages/Signup';
+import Login from './pages/Login';
 import CategoryTemplate from './pages/CategoryTemplate';
 import Food from './pages/Food';
+
 
 function App() {
   return (
@@ -16,6 +20,14 @@ function App() {
             <Route
               path="/"
               element={<Home />}
+            />
+            <Route
+              path="/login"
+              element={<Login />}
+            />
+            <Route
+              path="/signup"
+              element={<Signup />}
             />
             <Route
               path="/food"
