@@ -105,10 +105,6 @@ const Home = () => {
     },
   ];
 
-  if (!bills) {
-    return <div>Loading...</div>;
-  }
-
   return (
     <div className="home">
       <button onClick={handleDeleteSelected} className="delete-button">

@@ -104,10 +104,6 @@ const CategoryTemplate = (props) => {
     },
   ];
 
-  if (!bills) {
-    return <div>Loading...</div>;
-  }
-
   return (
     <div className="category-template">
       <button onClick={handleDeleteSelected} className="delete-button">
