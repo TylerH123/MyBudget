@@ -6,7 +6,7 @@ import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-quartz.css';
 
 // components
-import BillForm from "../components/BillForm";
+import AddBillForm from "../components/AddBillForm";
 
 // utils
 import { getBillsByCategory, deleteBill } from '../utils/apiUtils';
@@ -124,7 +124,7 @@ const CategoryTemplate = (props) => {
           suppressCellSelection
         />
       </div>
-      <BillForm category={category} />
+      <AddBillForm category={category} />
       {props.CSVParser}
     </div>
   );

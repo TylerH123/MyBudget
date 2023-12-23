@@ -6,7 +6,7 @@ import "ag-grid-community/styles/ag-grid.css"; // For structural styles
 import "ag-grid-community/styles/ag-theme-quartz.css"; // Theme
 
 // components
-import BillForm from "../components/BillForm";
+import AddBillForm from "../components/AddBillForm";
 import CSVParser from "../components/CSVParser";
 
 // utils
@@ -126,7 +126,7 @@ const Home = () => {
           suppressCellSelection
         />
       </div>
-      <BillForm category={"Food"} />
+      <AddBillForm category={"Food"} />
       <CSVParser />
     </div>
   );

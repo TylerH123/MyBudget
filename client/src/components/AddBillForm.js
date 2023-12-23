@@ -14,7 +14,7 @@ const setCategoryValue = (category) => {
 	}
 }
 
-const BillForm = (props) => {
+const AddBillForm = (props) => {
 	const { dispatch } = useBillsContext();
 	const [ category, setCategory ] = useState(props.category);
 	const [ subcategory, setSubcategory ] = useState('');
@@ -133,4 +133,4 @@ const BillForm = (props) => {
 	)
 }
 
-export default BillForm;
+export default AddBillForm;
