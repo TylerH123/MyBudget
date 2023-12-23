@@ -1,70 +1,130 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useBillsContext } from "../hooks/useBillsContext";
+import { AgGridReact } from "ag-grid-react";
 
-// components
+import "ag-grid-community/styles/ag-grid.css";
+import "ag-grid-community/styles/ag-theme-quartz.css";
+
 import BillForm from "../components/BillForm";
-
-// utils
 import { getBillsByCategory, deleteBill } from "../utils/apiUtils";
 import { displayDate, displayBillAmount } from "../utils/utils";
 
-// TODO:
-// add spinner for loading
 const CategoryTemplate = (props) => {
-	const { bills, dispatch } = useBillsContext();
-	const { category } = props;
-	// TODO: dynamically set the year
-	const year = '2023';
+  const { bills, dispatch } = useBillsContext();
+  const { category } = props;
+  const year = "2023";
+  const [gridApi, setGridApi] = useState(null);
 
-	useEffect(() => {
-		try {
-			const fetchBills = async () => {
-				const [ res, data ] = await getBillsByCategory(year, category);
-				if (!res.ok) {
-					throw new Error(data.error);
-				}
+  useEffect(() => {
+    const fetchBills = async () => {
+      try {
+        const [res, data] = await getBillsByCategory(year, category);
+        if (!res.ok) {
+          throw new Error(data.error);
+        }
+        dispatch({ type: "SET_BILLS", payload: data });
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchBills();
+  }, [dispatch, category, year]);
 
-				dispatch({type: 'SET_BILLS', payload: data});
-			}
-			fetchBills();
-		} catch (error) {
-			console.log(error);
-		}
-	}, [dispatch, category, year]); // empty dependency array to run the effect only on mount
+  const handleDeleteSelected = async () => {
+    const selectedNodes = gridApi.getSelectedNodes();
+    const selectedIds = selectedNodes.map((node) => node.data._id);
 
-	const handleDelete = async (id) => {
-		try {
-			const [ res, data ] = await deleteBill(year, id);
-			if (!res.ok) {
-				throw new Error(data.error);
-			}
-			
-			dispatch({type: 'DELETE_BILL', payload: data})
-		} catch (error) {
-			console.log(error);
-		}
-	}
-	
-	if(!bills) {
-		return <div>Loading...</div> 
-	}
+    for (let id of selectedIds) {
+      try {
+        const [res] = await deleteBill(year, id);
+        if (!res.ok) {
+          console.log(res);
+        }
+        dispatch({ type: "DELETE_BILL", payload: id });
+      } catch (error) {
+        console.log(error);
+      }
+    }
 
-	return (
-		<div className="home">
-			{bills && (
-				<div className="bills">
-					{ bills.map((bill) => (
-						<div key={bill._id}>
-							{displayDate(bill.date)} | {bill.category} - {bill.subcategory}: ${displayBillAmount(bill.amount)}
-							<button onClick={handleDelete.bind(this, bill._id)}>Delete</button>
-						</div> 
-					))}
-				</div>
-			)}
-			<BillForm category={category}/>
-			{props.CSVParser}
-		</div>
-	)
-}
+    gridApi.deselectAll();
+    const [res, updatedData] = await getBillsByCategory(year, category);
+    if (res.ok) {
+      dispatch({ type: "SET_BILLS", payload: updatedData });
+    }
+  };
+
+  const onGridReady = (params) => {
+    setGridApi(params.api);
+  };
+
+  const columns = [
+    {
+      headerCheckboxSelection: true,
+      checkboxSelection: true,
+      width: 50,
+      lockPosition: true,
+      suppressMenu: true,
+      resizable: false,
+      flex: 0,
+    },
+    {
+      headerName: "Date",
+      field: "date",
+      sortable: true,
+      filter: true,
+      flex: 1,
+      valueFormatter: (params) => displayDate(params.value),
+    },
+    {
+      headerName: "Category",
+      field: "category",
+      sortable: true,
+      filter: true,
+      flex: 1,
+    },
+    {
+      headerName: "Subcategory",
+      field: "subcategory",
+      sortable: true,
+      filter: true,
+      flex: 1,
+    },
+    {
+      headerName: "Amount",
+      field: "amount",
+      sortable: true,
+      filter: true,
+      flex: 1,
+      valueFormatter: (params) => displayBillAmount(params.value),
+    },
+  ];
+
+  if (!bills) {
+    return <div>Loading...</div>;
+  }
+
+  return (
+    <div className="category-template">
+      <button onClick={handleDeleteSelected} className="delete-button">
+        Delete Selected
+      </button>
+      <div id="categoryGrid" className="ag-theme-quartz">
+        <AgGridReact
+          rowData={bills}
+          columnDefs={columns}
+          domLayout="autoHeight"
+          pagination={true}
+          paginationPageSize={20}
+          rowSelection="multiple"
+          onGridReady={onGridReady}
+          suppressRowClickSelection
+          suppressCellSelection
+        />
+      </div>
+      <BillForm category={category} />
+      {props.CSVParser}
+    </div>
+  );
+};
 
 export default CategoryTemplate;
