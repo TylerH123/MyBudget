@@ -29,9 +29,7 @@ const getBills = async (req, res) => {
 
 // Get all bills documents for specific category
 const getBillsByCategory = async (req, res) => {
-    // authenticate signed in user
     const owner = req.user._id;
-
     const { category, year } = req.params;
     
     if (!checkCategoryExists) {
@@ -59,8 +57,6 @@ const getBill = async (req, res) => {
     if (!year || !(year in yrToModel)) {
         return res.status(404).json({error: 'Year not provided or year does not exist'});
     }
-
-    // authenticate signed in user
 
     const bills = await yrToModel[year].findById(id);
     if (!bills) {
@@ -105,8 +101,6 @@ const deleteBill = async (req, res) => {
         return res.status(404).json({error: 'Year not provided or year does not exist'})
     }
 
-    // authenticate signed in user
-
     const bills = await yrToModel[year].findOneAndDelete({ _id: id });
     if (!bills) {
         return res.status(404).json({error: 'No such bill'});
@@ -126,8 +120,7 @@ const updateBill = async (req, res) => {
         return res.status(404).json({error: 'Year not provided or year does not exist'});
     }
 
-    // authenticate signed in user
-
+    // TODO:
     // validate req body - make sure signed in user is the same as the owner - dont let updates to owner
     console.log(req.body);
 
@@ -161,7 +154,6 @@ const resetCollection = async (req, res) => {
         res.status(200).json({message: `${year} successfully reset`});
     }
     catch (error) {
-        // Log error for debugging purposes
         console.error('Error resetting collection:', error);
         return res.status(500).json({error: 'Resetting collection failed'});
     }

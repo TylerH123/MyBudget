@@ -14,7 +14,7 @@ export const billsReducer = (state, action) => {
 			}
 		case 'DELETE_BILL':
 			return {
-				bills: state.bills.filter((bill) => bill._id !== action.payload._id)
+				bills: state.bills.filter((bill) => bill._id !== action.payload)
 			}
 		default:
 			return state;
