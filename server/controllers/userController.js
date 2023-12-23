@@ -6,8 +6,6 @@ const createToken = (_id) => {
     return jwt.sign({ _id }, process.env.SECRET, { expiresIn: '30d' });
 }
 
-// TODO: authentication
-
 // Sign up user
 const signupUser = async (req, res) => {
     const { email, password } = req.body;
@@ -37,11 +35,9 @@ const loginUser = async (req, res) => {
 
 // Get all the categories for a user as an array
 const getCategoriesAsOptions = async (req, res) => {
-    // TODO: 
-    // auth + get email
-    // let email = getEmail()
     try {
-        const query = await userModel.findOne({ email: 'admin@admin.com' }, { _id: 0, categories: 1 });
+        const { _id } = req.user;
+        const query = await userModel.findOne({ _id }, { _id: 0, categories: 1 });
         let options = [];
         query.categories.forEach((item) => {
             options.push({value: item, label: item});
@@ -57,6 +53,5 @@ const getCategoriesAsOptions = async (req, res) => {
 module.exports = {
     loginUser,
     signupUser,
-    // getCategories,
     getCategoriesAsOptions
 };

@@ -16,20 +16,21 @@ const checkCategoryExists = async (username, category) => {
 
 // Get all bills documents in collection
 const getBills = async (req, res) => {
-    const { user } = req;
+    const owner = req.user._id;
     const { year } = req.params;
     if (!year || !(year in yrToModel)) {
         return res.status(404).json({error: 'Year not provided or year does not exist'});
     }
 
     // get all bills for owner
-    const bills = await yrToModel[year].find({ owner: user }).sort({ date: -1 });
+    const bills = await yrToModel[year].find({ owner }).sort({ date: -1 });
     res.status(200).json(bills);
 }
 
 // Get all bills documents for specific category
 const getBillsByCategory = async (req, res) => {
     // authenticate signed in user
+    const owner = req.user._id;
 
     const { category, year } = req.params;
     
@@ -42,7 +43,7 @@ const getBillsByCategory = async (req, res) => {
     }
 
     // get all bills for owner
-    const bills = await yrToModel[year].find({owner: 'Tyler', category: category}).sort({ date: -1 });
+    const bills = await yrToModel[year].find({ owner , category: category }).sort({ date: -1 });
     res.status(200).json(bills);
 }
 
@@ -70,7 +71,7 @@ const getBill = async (req, res) => {
 
 // Create new bill document in collection
 const createBill = async (req, res) => {
-    const { user } = req;
+    const owner = req.user._id;
     const { year } = req.params;
 
     if (!year || !(year in yrToModel)) {
@@ -84,7 +85,7 @@ const createBill = async (req, res) => {
     }
 
     try {
-        const newBill = await yrToModel[year].create({ owner: user, category, subcategory, date, amount, description });
+        const newBill = await yrToModel[year].create({ owner, category, subcategory, date, amount, description });
         res.status(201).json(newBill);
     } catch (error) {
         res.status(400).json({ error: error.message });
@@ -106,7 +107,7 @@ const deleteBill = async (req, res) => {
 
     // authenticate signed in user
 
-    const bills = await yrToModel[year].findOneAndDelete({_id: id});
+    const bills = await yrToModel[year].findOneAndDelete({ _id: id });
     if (!bills) {
         return res.status(404).json({error: 'No such bill'});
     }
@@ -130,7 +131,7 @@ const updateBill = async (req, res) => {
     // validate req body - make sure signed in user is the same as the owner - dont let updates to owner
     console.log(req.body);
 
-    const bills = await yrToModel[year].findOneAndUpdate({_id: id}, {...req.body});
+    const bills = await yrToModel[year].findOneAndUpdate({ _id: id }, { ...req.body });
     if (!bills) {
         return res.status(404).json({error: 'No such bill'});
     }
