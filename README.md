@@ -21,6 +21,11 @@ cd MyBudget
 
 ### Install Dependencies
 
+#### Install dependencies:
+```bash
+npm install
+```
+
 #### Install server-side dependencies:
 ```bash
 cd server
