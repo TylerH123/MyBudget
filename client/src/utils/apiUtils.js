@@ -37,8 +37,7 @@ const getBillsByCategory = async (year, category) => {
  * const [ response, responseData ] = await postBill(newBill);
 */
 const postBill = async (bill) => {
-	const year = bill.date.slice(0, 4);
-	console.log(year);
+	const year = bill.date.getFullYear();
 	const res = await fetch(`http://localhost:4000/api/bills/${year}`, {
 		method: 'POST',
 		body: JSON.stringify(bill),
@@ -81,4 +80,47 @@ const getCategoriesForUser = async () => {
 	return [res, data];
 }
 
-export { getBills, getBillsByCategory, postBill, deleteBill, getCategoriesForUser };
+// ================User Auth Routes===================
+
+/**
+ * Sends a POST request to sign up a user.
+ *
+ * @returns {Promise<{ response: Response, data: any }>} - A promise resolving to an object containing the response and parsed JSON data.
+*/
+const signupUser = async (email, password) => {
+	const res = await fetch('http://localhost:4000/api/users/signup', {
+		method: 'POST',
+		headers: {'Content-Type': 'application/json'},
+		body: JSON.stringify({email, password})
+	});
+	const data = await res.json();
+
+	return [res, data];
+}
+
+/**
+ * Sends a POST request to log in a user.
+ *
+ * @returns {Promise<{ response: Response, data: any }>} - A promise resolving to an object containing the response and parsed JSON data.
+*/
+const loginUser = async (email, password) => {
+	const res = await fetch('http://localhost:4000/api/users/login', {
+		method: 'POST',
+		headers: {'Content-Type': 'application/json'},
+		body: JSON.stringify({email, password})
+	});
+	const data = await res.json();
+
+	return [res, data];
+}
+
+
+export { 
+	getBills,
+	getBillsByCategory,
+	postBill,
+	deleteBill,
+	getCategoriesForUser,
+	signupUser,
+	loginUser
+};

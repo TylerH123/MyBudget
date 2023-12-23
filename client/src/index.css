@@ -108,3 +108,38 @@ input.error:focus{
     margin: 0.5rem 0;
   }
 }
+
+/* auth forms */
+form.signup, form.login {
+  max-width: 400px;
+  margin: 40px auto;
+  padding: 20px;
+  background: #fff;
+  border-radius: 4px;
+}
+
+/* navbar */
+nav {
+  display: flex;
+  align-items: center;
+}
+
+nav div {
+  margin-left: 0.5rem;
+  display: flex;
+  align-items: center;
+  a {
+    margin-right: 0.5rem;
+  }
+}
+
+nav button {
+  background: #fff;
+  color: var(--primary);
+  border: 2px solid var(--primary);
+  padding: 0.4rem 0.6rem;
+  border-radius: 4px;
+  font-family: 'Poppins';
+  cursor: pointer;
+  font-size: 1rem;
+}

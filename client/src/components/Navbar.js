@@ -1,8 +1,17 @@
 import { Link } from "react-router-dom";
 // import DarkModeToggle from "react-dark-mode-toggle";
 // import React, { useState } from "react";
+import { useLogout } from '../hooks/useLogout';
+import { useAuthContext } from '../hooks/useAuthContext';
 
 const Navbar = () => {
+	const { logout } = useLogout();
+	const { user } = useAuthContext();
+
+	const handleLogout = () => {
+		logout();
+	}
+
   //   const [isDarkMode, setIsDarkMode] = useState(() => false);
 
   return (
@@ -23,6 +32,24 @@ const Navbar = () => {
         <Link to="/vacation">
           <p className="link">Vacation</p>
         </Link>
+		<nav>
+			{user && (
+				<div>
+					<span>{user.email}</span>
+					<button onClick={handleLogout}>Log Out</button>
+				</div>
+			)}
+			{!user && (
+				<div>
+					<Link to="/login">
+						<p className="link">Login</p>
+					</Link>
+					<Link to="/signup">
+						<p className="link">Sign Up</p>
+					</Link>
+				</div>
+			)}
+		</nav>
         {/* <DarkModeToggle
           onChange={setIsDarkMode}
           checked={isDarkMode}

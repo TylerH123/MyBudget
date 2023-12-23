@@ -1,5 +1,5 @@
-import CSVParser from "../components/CSVParser";
-import CategoryTemplate from "./CategoryTemplate";
+import CSVParser from '../components/CSVParser';
+import CategoryTemplate from './CategoryTemplate';
 
 // add spinner for loading
 const Food = (props) => {

@@ -1,12 +1,15 @@
-import { useEffect, useState } from "react";
-import { useBillsContext } from "../hooks/useBillsContext";
-import { AgGridReact } from "ag-grid-react";
+import { useEffect, useState } from 'react';
+import { useBillsContext } from '../hooks/useBillsContext';
 
+import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/styles/ag-grid.css"; // For structural styles
 import "ag-grid-community/styles/ag-theme-quartz.css"; // Theme
 
+// components
 import BillForm from "../components/BillForm";
 import CSVParser from "../components/CSVParser";
+
+// utils
 import { getBills, deleteBill } from "../utils/apiUtils";
 import { displayDate, displayBillAmount } from "../utils/utils";
 

@@ -11,9 +11,6 @@ const signup = async (email, password) => {
 	if (!validator.isEmail(email)) {
 		throw Error('Invalid email address');
 	}
-	if (!validator.isStrongPassword(password)) {
-		throw Error('Password is not strong enough');
-	}
 
 	const exists = await userModel.findOne({ email });
 

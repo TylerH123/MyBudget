@@ -1,13 +1,16 @@
 import { useEffect, useState } from "react";
 import { useBillsContext } from "../hooks/useBillsContext";
+
 import { AgGridReact } from "ag-grid-react";
+import 'ag-grid-community/styles/ag-grid.css';
+import 'ag-grid-community/styles/ag-theme-quartz.css';
 
-import "ag-grid-community/styles/ag-grid.css";
-import "ag-grid-community/styles/ag-theme-quartz.css";
-
+// components
 import BillForm from "../components/BillForm";
-import { getBillsByCategory, deleteBill } from "../utils/apiUtils";
-import { displayDate, displayBillAmount } from "../utils/utils";
+
+// utils
+import { getBillsByCategory, deleteBill } from '../utils/apiUtils';
+import { displayDate, displayBillAmount } from '../utils/utils';
 
 const CategoryTemplate = (props) => {
   const { bills, dispatch } = useBillsContext();
