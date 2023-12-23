@@ -1,5 +1,6 @@
 import { useState } from 'react';
 // import { useBillsContext } from "../hooks/useBillsContext";
+import { useAuthContext } from '../hooks/useAuthContext';
 import Papa from 'papaparse';
 
 // components
@@ -22,6 +23,7 @@ const checkFileIsCSV = (inputFile) => {
 
 const CSVParser = () => {
 	// const { dispatch } = useBillsContext();
+	const { user } = useAuthContext();
 	const [ error, setError ] = useState(null);
 	const [ badEntries, setBadEntries ] = useState([]);
 
@@ -38,7 +40,6 @@ const CSVParser = () => {
 	const createAndSendBill = async (item) => {
 		try {
 			const bill = { 
-				owner: 'Tyler', 
 				category: 'Food', 
 				subcategory: item.Place, 
 				date: new Date(item.Date), 
@@ -46,7 +47,7 @@ const CSVParser = () => {
 				description: null
 			};
 
-			const [ res, data ] = await postBill(bill); 
+			const [ res, data ] = await postBill(user.token, bill); 
 			if (!res.ok) {
 				throw new Error(data.error);
 			}
@@ -55,12 +56,20 @@ const CSVParser = () => {
 		} catch (err) {
 			// TODO: create array to store all bad entries and print them out later
 			console.log(err);
+			console.log('before', badEntries);
 			setBadEntries([...badEntries, item]);
+			console.log('after', badEntries);
 		}
 	}
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
+
+		if (!user) {
+			setError('You must be logged in');
+			return
+		}
+
 		try {
 			const selectedFile = e.target[0].files[0];
 			const fileError = checkFileIsCSV(selectedFile);
@@ -105,7 +114,7 @@ const CSVParser = () => {
 				accept=".csv"
 				onChange={checkInputFile}
 			/>
-			<button>Upload File</button>
+			<button type='submit'>Upload File</button>
 		</form>
 	)
 }

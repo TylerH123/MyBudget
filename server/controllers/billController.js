@@ -7,8 +7,6 @@ const yrToModel = {
 }
 const adminPass = process.env.ADMIN_PASS;
 
-// TODO: find date from req and change collection inserting into
-
 // TODO: validate cateogry
 const checkCategoryExists = async (username, category) => {
     const categories = await userModel.findOne({ username: 'Tyler' }, { _id: 0, categories: 1 });
@@ -18,14 +16,14 @@ const checkCategoryExists = async (username, category) => {
 
 // Get all bills documents in collection
 const getBills = async (req, res) => {
-    // authenticate signed in user
+    const { user } = req;
     const { year } = req.params;
     if (!year || !(year in yrToModel)) {
         return res.status(404).json({error: 'Year not provided or year does not exist'});
     }
 
     // get all bills for owner
-    const bills = await yrToModel[year].find({owner: 'Tyler'}).sort({ date: -1 });
+    const bills = await yrToModel[year].find({ owner: user }).sort({ date: -1 });
     res.status(200).json(bills);
 }
 
@@ -72,20 +70,21 @@ const getBill = async (req, res) => {
 
 // Create new bill document in collection
 const createBill = async (req, res) => {
+    const { user } = req;
     const { year } = req.params;
-    
+
     if (!year || !(year in yrToModel)) {
         return res.status(404).json({error: 'Year not provided or year does not exist'});
     }
 
-    const { owner, category, subcategory, date, amount, description } = req.body;
+    const { category, subcategory, date, amount, description } = req.body;
 
     if (!checkCategoryExists) {
         return res.status(404).json({error: 'Category does not exist'});
     }
 
     try {
-        const newBill = await yrToModel[year].create({ owner, category, subcategory, date, amount, description });
+        const newBill = await yrToModel[year].create({ owner: user, category, subcategory, date, amount, description });
         res.status(201).json(newBill);
     } catch (error) {
         res.status(400).json({ error: error.message });

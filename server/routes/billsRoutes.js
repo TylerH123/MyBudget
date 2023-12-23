@@ -8,8 +8,12 @@ const {
     updateBill,
     resetCollection
 } = require('../controllers/billController');
+const requireAuth = require('../middleware/requireAuth');
 
 const router = express.Router({ mergeParams: true });
+
+// require auth for all bill routes
+router.use(requireAuth);
 
 router.get('/', getBills);
 

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useBillsContext } from "../hooks/useBillsContext";
+import { useAuthContext } from "../hooks/useAuthContext";
 
 import { AgGridReact } from "ag-grid-react";
 import 'ag-grid-community/styles/ag-grid.css';
@@ -15,13 +16,15 @@ import { displayDate, displayBillAmount } from '../utils/utils';
 const CategoryTemplate = (props) => {
   const { bills, dispatch } = useBillsContext();
   const { category } = props;
+  const [ gridApi, setGridApi ] = useState(null);
+  const { user } = useAuthContext();
+
   const year = "2023";
-  const [gridApi, setGridApi] = useState(null);
 
   useEffect(() => {
     const fetchBills = async () => {
       try {
-        const [res, data] = await getBillsByCategory(year, category);
+        const [res, data] = await getBillsByCategory(user.token, year, category);
         if (!res.ok) {
           throw new Error(data.error);
         }
@@ -30,8 +33,11 @@ const CategoryTemplate = (props) => {
         console.log(error);
       }
     };
-    fetchBills();
-  }, [dispatch, category, year]);
+    
+    if (user) {
+      fetchBills();
+    }
+  }, [dispatch, category, year, user]);
 
   const handleDeleteSelected = async () => {
     const selectedNodes = gridApi.getSelectedNodes();
@@ -39,9 +45,9 @@ const CategoryTemplate = (props) => {
 
     for (let id of selectedIds) {
       try {
-        const [res] = await deleteBill(year, id);
+        const [res, data] = await deleteBill(user.token, year, id);
         if (!res.ok) {
-          console.log(res);
+          throw Error(data.error);
         }
         dispatch({ type: "DELETE_BILL", payload: id });
       } catch (error) {
@@ -50,10 +56,6 @@ const CategoryTemplate = (props) => {
     }
 
     gridApi.deselectAll();
-    const [res, updatedData] = await getBillsByCategory(year, category);
-    if (res.ok) {
-      dispatch({ type: "SET_BILLS", payload: updatedData });
-    }
   };
 
   const onGridReady = (params) => {

@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useBillsContext } from '../hooks/useBillsContext';
+import { useAuthContext } from '../hooks/useAuthContext';
 import Select from 'react-select';
 
 // utils
@@ -16,6 +17,7 @@ const setCategoryValue = (category) => {
 
 const AddBillForm = (props) => {
 	const { dispatch } = useBillsContext();
+	const { user } = useAuthContext();
 	const [ category, setCategory ] = useState(props.category);
 	const [ subcategory, setSubcategory ] = useState('');
 	const [ date, setDate ] = useState(new Date());
@@ -24,11 +26,12 @@ const AddBillForm = (props) => {
 	const [ error, setError ] = useState(null);
 	const [ options, setOptions ] = useState([]);
 
-
 	useEffect(() => {
 		try {
+			// TODO: 
+			// fix this function if user is null
 			const getCategories = async () => {
-				const [ res, data ] = await getCategoriesForUser();
+				const [ res, data ] = await getCategoriesForUser(user.token);
 
 				if (!res.ok) {
 					throw new Error(data.error)
@@ -40,23 +43,25 @@ const AddBillForm = (props) => {
 		} catch (err) {
 			setError(err.message);
 		}
-	}, []);
+	}, [user]);
 
 	useEffect(() => {
 		setCategory(setCategoryValue(props.category));
 	}, [props.category])
 
-	// TODO:
-	// authenticate user
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 
-		const owner = 'Tyler';
+		if (!user) {
+			setError('You must be logged in');
+			return
+		}
+
 		const billAmount = convertPriceStringToInt(amount);
-		const bill = { owner, category: category.value, subcategory, date, amount: billAmount, description };
+		const bill = { category: category.value, subcategory, date, amount: billAmount, description };
 
 		try {
-			const [ res, data ] = await postBill(bill);
+			const [ res, data ] = await postBill(user.token, bill);
 			if (!res.ok) {
 				throw new Error(data.error);
 			}
