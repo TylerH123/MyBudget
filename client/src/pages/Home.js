@@ -116,7 +116,8 @@ const Home = () => {
           columnDefs={columns}
           domLayout="autoHeight"
           pagination={true}
-          paginationPageSize={20}
+          paginationPageSize={25}
+          paginationPageSizeSelector={[25, 50, 100]}
           rowSelection="multiple"
           onGridReady={onGridReady}
           suppressRowClickSelection

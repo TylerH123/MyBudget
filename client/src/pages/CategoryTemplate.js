@@ -24,6 +24,7 @@ const CategoryTemplate = (props) => {
   useEffect(() => {
     const fetchBills = async () => {
       try {
+        dispatch({ type: "SET_BILLS", payload: null });
         const [res, data] = await getBillsByCategory(user.token, year, category);
         if (!res.ok) {
           throw new Error(data.error);
@@ -115,7 +116,8 @@ const CategoryTemplate = (props) => {
           columnDefs={columns}
           domLayout="autoHeight"
           pagination={true}
-          paginationPageSize={20}
+          paginationPageSize={25}
+          paginationPageSizeSelector={[25, 50, 100]}
           rowSelection="multiple"
           onGridReady={onGridReady}
           suppressRowClickSelection
