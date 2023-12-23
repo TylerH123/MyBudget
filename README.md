@@ -21,7 +21,7 @@ cd MyBudget
 
 ### Install Dependencies
 
-#### Install dependencies:
+#### Install root dependencies:
 ```bash
 npm install
 ```
