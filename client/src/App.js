@@ -1,16 +1,19 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { useAuthContext } from './hooks/useAuthContext';
 
 // pages & components
 import Navbar from './components/Navbar';
 
 import Home from './pages/Home';
-import Signup from './pages/Signup';
 import Login from './pages/Login';
+import Signup from './pages/Signup';
 import CategoryTemplate from './pages/CategoryTemplate';
 import Food from './pages/Food';
 
 
 function App() {
+  const { user } = useAuthContext();
+
   return (
     <div className="App">
       <BrowserRouter>
@@ -19,31 +22,31 @@ function App() {
           <Routes>
             <Route
               path="/"
-              element={<Home />}
+              element={user ? <Home /> : <Navigate to="/login" />}
             />
             <Route
               path="/login"
-              element={<Login />}
+              element={!user ? <Login /> : <Navigate to="/" />}
             />
             <Route
               path="/signup"
-              element={<Signup />}
+              element={!user ? <Signup /> : <Navigate to="/" />}
             />
             <Route
               path="/food"
-              element={<Food />}
+              element={user ? <Food /> : <Navigate to="/login" />}
             />
             <Route
               path="/subscriptions"
-              element={<CategoryTemplate category={'Subscriptions'}/>}
+              element={user ? <CategoryTemplate category={'Subscriptions'}/> : <Navigate to="/login" />}
             />
             <Route
               path="/utilities"
-              element={<CategoryTemplate category={'Utilities'}/>}
+              element={user ? <CategoryTemplate category={'Utilities'}/> : <Navigate to="/login" />}
             />
             <Route
               path="/vacation"
-              element={<CategoryTemplate category={'Vacation'}/>}
+              element={user ? <CategoryTemplate category={'Vacation'}/> : <Navigate to="/login" />}
             />
           </Routes>
         </div>

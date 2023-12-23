@@ -4,8 +4,12 @@
  * @param {year} string - The name of the collection to get the data from.
  * @returns {Promise<{ response: Response, data: any }>} - A promise resolving to an object containing the response and parsed JSON data.
 */
-const getBills = async (year) => {
-	const res = await fetch(`http://localhost:4000/api/bills/${year}`);
+const getBills = async (token, year) => {
+	const res = await fetch(`http://localhost:4000/api/bills/${year}`, {
+		headers: {
+			'Authorization': `Bearer ${token}`
+		}
+	});
 	const data = await res.json();
 
 	return [res, data];
@@ -18,8 +22,12 @@ const getBills = async (year) => {
  * @param {category} string - The name of the category to filter by.
  * @returns {Promise<{ response: Response, data: any }>} - A promise resolving to an object containing the response and parsed JSON data.
 */
-const getBillsByCategory = async (year, category) => {
-	const res = await fetch(`http://localhost:4000/api/bills/${year}/${category}`);
+const getBillsByCategory = async (token, year, category) => {
+	const res = await fetch(`http://localhost:4000/api/bills/${year}/${category}`, {
+		headers: {
+			'Authorization': `Bearer ${token}`
+		}
+	});
 	const data = await res.json();
 
 	return [res, data];
@@ -36,13 +44,14 @@ const getBillsByCategory = async (year, category) => {
  * const newBill = { your bill data here };
  * const [ response, responseData ] = await postBill(newBill);
 */
-const postBill = async (bill) => {
+const postBill = async (token, bill) => {
 	const year = bill.date.getFullYear();
 	const res = await fetch(`http://localhost:4000/api/bills/${year}`, {
 		method: 'POST',
 		body: JSON.stringify(bill),
 		headers: {
-			'Content-Type': 'application/json'
+			'Content-Type': 'application/json',
+			'Authorization': `Bearer ${token}`
 		}
 	});
 	const data = await res.json();
@@ -57,9 +66,12 @@ const postBill = async (bill) => {
  * @param {id} string - The id of the bill to be deleted.
  * @returns {Promise<{ response: Response, data: any }>} - A promise resolving to an object containing the response and parsed JSON data.
 */
-const deleteBill = async (year, id) => {
+const deleteBill = async (token, year, id) => {
 	const res = await fetch(`http://localhost:4000/api/bills/${year}/bill/${id}`, {
-		method: 'DELETE'
+		method: 'DELETE',
+		headers: {
+			'Authorization': `Bearer ${token}`
+		}
 	});
 	const data = await res.json();
 
@@ -72,9 +84,14 @@ const deleteBill = async (year, id) => {
  * Sends a GET request to retrieve all the categories for a user.
  *
  * @returns {Promise<{ response: Response, data: any }>} - A promise resolving to an object containing the response and parsed JSON data.
+ * data will be an array of strings - with each string being a category
 */
-const getCategoriesForUser = async () => {
-	const res = await fetch('http://localhost:4000/api/users/categories/options');
+const getCategoriesForUser = async (token) => {
+	const res = await fetch('http://localhost:4000/api/users/categories/options', {
+		headers: {
+			'Authorization': `Bearer ${token}`
+		}
+	});
 	const data = await res.json();
 
 	return [res, data];

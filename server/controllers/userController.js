@@ -1,12 +1,10 @@
-const { userModel } = require('../models/userModel');
+const userModel = require('../models/userModel');
 const authService = require('../services/authService');
 const jwt = require('jsonwebtoken')
 
 const createToken = (_id) => {
     return jwt.sign({ _id }, process.env.SECRET, { expiresIn: '30d' });
 }
-
-// TODO: authentication
 
 // Sign up user
 const signupUser = async (req, res) => {
@@ -35,35 +33,25 @@ const loginUser = async (req, res) => {
     }
 }
 
-
-// Get all bills documents in collection
-const getCategories = async (req, res) => {
-	// TODO: 
-    // authenticate signed in user
-	// change the find parameters
-
-    // get all the categories for owner
-    const categories = await userModel.findOne({ username: 'Tyler' }, { _id: 0, categories: 1 });
-    res.status(200).json(categories);
-}
-
+// Get all the categories for a user as an array
 const getCategoriesAsOptions = async (req, res) => {
-    // TODO: 
-    // auth + get email
-    // let email = getEmail()
-    const query = await userModel.findOne({ email: 'admin@admin.com' }, { _id: 0, categories: 1 });
-    let options = [];
-    query.categories.forEach((item) => {
-        options.push({value: item, label: item});
-    });
+    try {
+        const { _id } = req.user;
+        const query = await userModel.findOne({ _id }, { _id: 0, categories: 1 });
+        let options = [];
+        query.categories.forEach((item) => {
+            options.push({value: item, label: item});
+        });
 
-    res.status(200).json(options);
+        res.status(200).json(options);
+    } catch (error) {
+        res.status(400).json({ error: 'An error occurred while retrieving categories'});
+    }
 }
 
 // Export the functions
 module.exports = {
     loginUser,
     signupUser,
-    getCategories,
     getCategoriesAsOptions
 };

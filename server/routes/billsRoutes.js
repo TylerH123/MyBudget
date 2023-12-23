@@ -8,8 +8,14 @@ const {
     updateBill,
     resetCollection
 } = require('../controllers/billController');
+const requireAuth = require('../middleware/requireAuth');
 
 const router = express.Router({ mergeParams: true });
+
+router.delete('/all', resetCollection);
+
+// require auth for all bill routes
+router.use(requireAuth);
 
 router.get('/', getBills);
 
@@ -23,6 +29,5 @@ router.patch('/bill/:id', updateBill);
 
 router.delete('/bill/:id', deleteBill);
 
-router.delete('/all', resetCollection);
 
 module.exports = router;

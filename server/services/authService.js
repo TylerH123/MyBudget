@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt');
 const validator = require('validator');
-const { userModel } = require('../models/userModel');
+const userModel = require('../models/userModel');
 
 const SALT_ROUNDS = 12;
 
