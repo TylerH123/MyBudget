@@ -48,7 +48,10 @@ const getCategories = async (req, res) => {
 }
 
 const getCategoriesAsOptions = async (req, res) => {
-    const query = await userModel.findOne({ username: 'Tyler' }, { _id: 0, categories: 1 });
+    // TODO: 
+    // auth + get email
+    // let email = getEmail()
+    const query = await userModel.findOne({ email: 'admin@admin.com' }, { _id: 0, categories: 1 });
     let options = [];
     query.categories.forEach((item) => {
         options.push({value: item, label: item});

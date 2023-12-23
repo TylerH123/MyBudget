@@ -2,15 +2,17 @@ const bcrypt = require('bcrypt');
 const validator = require('validator');
 const { userModel } = require('../models/userModel');
 
+const SALT_ROUNDS = 12;
+
 const signup = async (email, password) => {
 	if (!email || !password) {
 		throw Error('All fields must be filled in');
 	}
 	if (!validator.isEmail(email)) {
-		throw Error('Email is not valid');
+		throw Error('Invalid email address');
 	}
 	if (!validator.isStrongPassword(password)) {
-		throw Error('Password not strong enough');
+		throw Error('Password is not strong enough');
 	}
 
 	const exists = await userModel.findOne({ email });
@@ -19,7 +21,7 @@ const signup = async (email, password) => {
 		throw Error('Email already in use');
 	}
 
-	const salt = await bcrypt.genSalt(10);
+	const salt = await bcrypt.genSalt(SALT_ROUNDS);
 	const hash = await bcrypt.hash(password, salt);
 
 	const user = await userModel.create({ email, password: hash });
@@ -29,7 +31,7 @@ const signup = async (email, password) => {
 
 const login = async (email, password) => {
 	if (!email || !password) {
-		throw Error('All fields must be filled');
+		throw Error('All fields must be filled in');
 	}
 
 	const user = await userModel.findOne({ email });
