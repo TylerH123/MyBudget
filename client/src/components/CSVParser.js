@@ -1,5 +1,5 @@
 import { useState } from 'react';
-// import { useBillsContext } from "../hooks/useBillsContext";
+import { useBillsContext } from "../hooks/useBillsContext";
 import { useAuthContext } from '../hooks/useAuthContext';
 import Papa from 'papaparse';
 
@@ -22,7 +22,7 @@ const checkFileIsCSV = (inputFile) => {
 }
 
 const CSVParser = () => {
-	// const { dispatch } = useBillsContext();
+	const { dispatch } = useBillsContext();
 	const { user } = useAuthContext();
 	const [ error, setError ] = useState(null);
 	const [ badEntries, setBadEntries ] = useState([]);
@@ -51,8 +51,7 @@ const CSVParser = () => {
 			if (!res.ok) {
 				throw new Error(data.error);
 			}
-			console.log('New bill added');
-			// dispatch({type: 'CREATE_BILL', payload: data});
+			dispatch({type: 'CREATE_BILL', payload: data});
 		} catch (err) {
 			// TODO: create array to store all bad entries and print them out later
 			console.log(err);

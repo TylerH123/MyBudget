@@ -2,6 +2,23 @@ import { createContext, useReducer } from 'react';
 
 export const BillsContext = createContext();
 
+const sortedInsert = (array, element) => {
+	let newArray = [];
+	let index = 0;
+
+	while (index < array.length && array[index].date > element.date) {
+		newArray.push(array[index]);
+		index++;
+	}
+	newArray.push(element);
+	while (index < array.length) {
+		newArray.push(array[index]);
+		index++;
+	}
+
+	return newArray;
+}
+
 export const billsReducer = (state, action) => {
 	switch (action.type) {
 		case 'SET_BILLS':
@@ -9,8 +26,9 @@ export const billsReducer = (state, action) => {
 				bills: action.payload
 			}
 		case 'CREATE_BILL':
+			// TODO: add is sorted to payload so dont have to use sorted insert
 			return {
-				bills: [action.payload, ...state.bills]
+				bills: sortedInsert(state.bills, action.payload)
 			}
 		case 'DELETE_BILL':
 			return {
