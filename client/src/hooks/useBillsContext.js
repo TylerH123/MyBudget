@@ -4,7 +4,7 @@ import { BillsContext } from '../context/BillContext';
 export const useBillsContext = () => {
 	const context = useContext(BillsContext);
 	if (!context) {
-		throw Error('useBillsContext must be used inside a billsContextProvider');
+		throw new Error('useBillsContext must be used inside a billsContextProvider');
 	}
 
 	return context;

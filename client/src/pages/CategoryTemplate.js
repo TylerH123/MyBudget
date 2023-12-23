@@ -47,7 +47,7 @@ const CategoryTemplate = (props) => {
       try {
         const [res, data] = await deleteBill(user.token, year, id);
         if (!res.ok) {
-          throw Error(data.error);
+          throw new Error(data.error);
         }
         dispatch({ type: "DELETE_BILL", payload: id });
       } catch (error) {

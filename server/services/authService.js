@@ -6,16 +6,16 @@ const SALT_ROUNDS = 12;
 
 const signup = async (email, password) => {
 	if (!email || !password) {
-		throw Error('All fields must be filled in');
+		throw new Error('All fields must be filled in');
 	}
 	if (!validator.isEmail(email)) {
-		throw Error('Invalid email address');
+		throw new Error('Invalid email address');
 	}
 
 	const exists = await userModel.findOne({ email });
 
 	if (exists) {
-		throw Error('Email already in use');
+		throw new Error('Email already in use');
 	}
 
 	const salt = await bcrypt.genSalt(SALT_ROUNDS);
@@ -28,18 +28,18 @@ const signup = async (email, password) => {
 
 const login = async (email, password) => {
 	if (!email || !password) {
-		throw Error('All fields must be filled in');
+		throw new Error('All fields must be filled in');
 	}
 
 	const user = await userModel.findOne({ email });
 	if (!user) {
-		throw Error('User with this email does not exist');
+		throw new Error('User with this email does not exist');
 	}
 
 	const match = await bcrypt.compare(password, user.password);
 
 	if (!match) {
-		throw Error('Invalid login credentials');
+		throw new Error('Invalid login credentials');
 	}
 
 	return user;
