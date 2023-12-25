@@ -7,7 +7,7 @@ import Papa from 'papaparse';
 import InvalidEntries from './InvalidEntries';
 
 // utils
-import { postBill, postBills } from '../utils/apiUtils';
+import { postBills } from '../utils/apiUtils';
 import { convertPriceStringToInt } from '../utils/utils';
 
 const checkFileIsCSV = (inputFile) => {
