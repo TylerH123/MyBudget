@@ -48,7 +48,16 @@ header a {
   margin: 0 auto;
 }
 
-/* Form CSS */
+/* Home page */
+.refresh-button {
+  margin-left: 0.5rem;
+}
+
+.delete-button, .refresh-button {
+  margin-bottom: 0.5rem;
+}
+
+/* Add bill form */
 label, input {
   display: block;
 }

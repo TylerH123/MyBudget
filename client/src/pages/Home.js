@@ -20,9 +20,9 @@ const Home = () => {
   const { user } = useAuthContext();
   
   const year = "2023";
-
-  useEffect(() => {
-    const fetchBills = async () => {
+  
+  const fetchBills = () => {
+    const fetchBillsForUser = async () => {
       try {
         const [res, data] = await getBills(user.token, year);
         if (!res.ok) {
@@ -33,11 +33,13 @@ const Home = () => {
         console.log(error);
       }
     };
-    
+
     if (user) {
-      fetchBills();
+      fetchBillsForUser();
     }
-  }, [dispatch, year, user]);
+  }
+  
+  useEffect(fetchBills, [dispatch, year, user]);
 
   const handleDeleteSelected = async () => {
     const selectedNodes = gridApi.getSelectedNodes();
@@ -109,6 +111,9 @@ const Home = () => {
     <div className="home">
       <button onClick={handleDeleteSelected} className="delete-button">
         Delete Selected
+      </button>
+      <button onClick={fetchBills} className="refresh-button">
+        Refresh
       </button>
       <div id="myGrid" className="ag-theme-quartz">
         <AgGridReact
