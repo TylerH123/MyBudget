@@ -12,12 +12,6 @@ const signup = async (email, password) => {
 		throw new Error('Invalid email address');
 	}
 
-	const exists = await userModel.findOne({ email });
-
-	if (exists) {
-		throw new Error('Email already in use');
-	}
-
 	const salt = await bcrypt.genSalt(SALT_ROUNDS);
 	const hash = await bcrypt.hash(password, salt);
 

@@ -15,6 +15,10 @@ const signupUser = async (req, res) => {
         const token = createToken(user._id);
         res.status(201).json({ email, token });
     } catch (error) {
+        if (error.code === 11000) {
+            return res.status(400).json({ error: 'Email already in use'});
+        }
+
         res.status(400).json({ error: error.message });
     }
 }

@@ -96,12 +96,12 @@ const createBills = async (req, res) => {
     const { year } = req.params;
 
     if (!year || !(year in yrToModel)) {
-        return res.status(404).json({error: 'Year not provided or year does not exist'});
+        return res.status(404).json({ error: 'Year not provided or year does not exist' });
     }
 
     const bills = req.body;
     if (!bills) {
-        return res.status(404).json({error: 'Bills not provided'});
+        return res.status(404).json({ error: 'Bills not provided' });
     }
 
     bills.forEach(element => {
