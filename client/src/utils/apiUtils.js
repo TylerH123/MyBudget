@@ -46,9 +46,30 @@ const getBillsByCategory = async (token, year, category) => {
 */
 const postBill = async (token, bill) => {
 	const year = bill.date.getFullYear();
-	const res = await fetch(`http://localhost:4000/api/bills/${year}`, {
+	const res = await fetch(`http://localhost:4000/api/bills/${year}/insertOne`, {
 		method: 'POST',
 		body: JSON.stringify(bill),
+		headers: {
+			'Content-Type': 'application/json',
+			'Authorization': `Bearer ${token}`
+		}
+	});
+	const data = await res.json();
+	
+	return [res, data];
+}
+
+/**
+ * Sends a POST request to create new bills by providing the bills data to the specified API endpoint.
+ *
+ * @param {Object} bills - The array of bill data to be sent in the request body.
+ * @returns {Promise<{ response: Response, data: any }>} - A promise resolving to an object containing the response and parsed JSON data.
+*/
+const postBills = async (token, bills) => {
+	const year = bills[0].date.getFullYear();
+	const res = await fetch(`http://localhost:4000/api/bills/${year}/insertMany`, {
+		method: 'POST',
+		body: JSON.stringify(bills),
 		headers: {
 			'Content-Type': 'application/json',
 			'Authorization': `Bearer ${token}`
@@ -136,6 +157,7 @@ export {
 	getBills,
 	getBillsByCategory,
 	postBill,
+	postBills,
 	deleteBill,
 	getCategoriesForUser,
 	signupUser,

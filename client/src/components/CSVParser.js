@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useBillsContext } from "../hooks/useBillsContext";
+import { useBillsContext } from '../hooks/useBillsContext';
 import { useAuthContext } from '../hooks/useAuthContext';
 import Papa from 'papaparse';
 
@@ -7,7 +7,7 @@ import Papa from 'papaparse';
 import InvalidEntries from './InvalidEntries';
 
 // utils
-import { postBill } from '../utils/apiUtils';
+import { postBill, postBills } from '../utils/apiUtils';
 import { convertPriceStringToInt } from '../utils/utils';
 
 const checkFileIsCSV = (inputFile) => {
@@ -37,9 +37,12 @@ const CSVParser = () => {
 		}
 	}
 
-	const createAndSendBill = async (item) => {
-		try {
-			const bill = { 
+	// take in array of lines from csv file and return array of bills
+	const createBills = (data) => {
+		let billsArray = new Array(data.length);
+		for (let i = 0; i < billsArray.length; i++) {
+			let item = data[i];
+			const bill = {
 				category: 'Food', 
 				subcategory: item.Place, 
 				date: new Date(item.Date), 
@@ -47,19 +50,49 @@ const CSVParser = () => {
 				description: null
 			};
 
-			const [ res, data ] = await postBill(user.token, bill); 
+			billsArray[i] = bill;
+		}
+
+		return billsArray;
+	}
+
+	const sendBills = async (bills) => {
+		try {
+			const [ res, data ] = await postBills(user.token, bills);
 			if (!res.ok) {
 				throw new Error(data.error);
 			}
-			dispatch({type: 'CREATE_BILL', payload: data});
+			dispatch({type: 'CREATE_BILLS', payload: data});
+			console.log(`Successfully added ${data.length} bills`);
 		} catch (err) {
 			// TODO: create array to store all bad entries and print them out later
 			console.log(err);
-			console.log('before', badEntries);
-			setBadEntries([...badEntries, item]);
-			console.log('after', badEntries);
 		}
 	}
+
+	// const createAndSendBill = async (item) => {
+	// 	try {
+	// 		const bill = { 
+	// 			category: 'Food', 
+	// 			subcategory: item.Place, 
+	// 			date: new Date(item.Date), 
+	// 			amount: convertPriceStringToInt(item.Price), 
+	// 			description: null
+	// 		};
+
+	// 		const [ res, data ] = await postBill(user.token, bill);
+	// 		if (!res.ok) {
+	// 			throw new Error(data.error);
+	// 		}
+	// 		dispatch({type: 'CREATE_BILL', payload: data});
+	// 	} catch (err) {
+	// 		// TODO: create array to store all bad entries and print them out later
+	// 		console.log(err);
+	// 		console.log('before', badEntries);
+	// 		setBadEntries([...badEntries, item]);
+	// 		console.log('after', badEntries);
+	// 	}
+	// }
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
@@ -79,11 +112,8 @@ const CSVParser = () => {
 				Papa.parse(selectedFile, {
 					complete: (results) => {
 						// Handle the parsed data
-						results.data.forEach((item) => {
-							// console.log(item);
-							createAndSendBill(item);
-						});
-						//   console.log(results.data);
+						let billsArray = createBills(results.data);
+						sendBills(billsArray);
 					},
 					header: true,
 				});

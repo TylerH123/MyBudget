@@ -4,6 +4,7 @@ const {
     getBillsByCategory,
     getBill,
     createBill,
+    createBills,
     deleteBill,
     updateBill,
     resetCollection
@@ -23,11 +24,12 @@ router.get('/:category', getBillsByCategory);
 
 router.get('/bill/:id', getBill);
 
-router.post('/', createBill);
+router.post('/insertOne', createBill);
+
+router.post('/insertMany', createBills);
 
 router.patch('/bill/:id', updateBill);
 
 router.delete('/bill/:id', deleteBill);
-
 
 module.exports = router;

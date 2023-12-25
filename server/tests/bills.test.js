@@ -27,9 +27,9 @@ let createdBillId; // Variable to store the created bill's ID
  
 // test route to post a bill for owner (Tyler)
 // should return the posted bill
-describe('POST /api/bills/2023', () => {
+describe('POST /api/bills/2023/insertOne', () => {
 	it('should create a bill for owner', async () => {
-		const res = await request(app).post('/api/bills/2023').send({
+		const res = await request(app).post('/api/bills/2023/insertOne').send({
 			owner: 'Tyler',
 			category: 'Food',
 			subcategory: 'Grubhub',
@@ -88,7 +88,7 @@ describe('DELETE /api/bills/2023/bill/:id', () => {
 describe('GET /api/bills/2023/:category', () => {
 	it('should return 2 bills for food category', async () => {
 		// populate table to test if categories work
-		await request(app).post('/api/bills/2023').send({
+		await request(app).post('/api/bills/2023/insertOne').send({
 			owner: 'Tyler',
 			category: 'Subscription',
 			subcategory: 'Grubhub',
@@ -97,7 +97,7 @@ describe('GET /api/bills/2023/:category', () => {
 			description: ''
 		});
 		
-		await request(app).post('/api/bills/2023').send({
+		await request(app).post('/api/bills/2023/insertOne').send({
 			owner: 'Tyler',
 			category: 'Food',
 			subcategory: 'Grubhub',
@@ -106,7 +106,7 @@ describe('GET /api/bills/2023/:category', () => {
 			description: ''
 		});
 		
-		await request(app).post('/api/bills/2023').send({
+		await request(app).post('/api/bills/2023/insertOne').send({
 			owner: 'Tyler',
 			category: 'Food',
 			subcategory: 'ice cream',

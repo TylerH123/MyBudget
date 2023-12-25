@@ -1,4 +1,5 @@
 const billModels = require('../models/billModels');
+const userModel = require('../models/userModel');
 const { isValid } = require('mongoose').Types.ObjectId;
 require('dotenv').config();
 
@@ -8,8 +9,8 @@ const yrToModel = {
 const adminPass = process.env.ADMIN_PASS;
 
 // TODO: validate cateogry
-const checkCategoryExists = async (username, category) => {
-    const categories = await userModel.findOne({ username: 'Tyler' }, { _id: 0, categories: 1 });
+const checkCategoryExists = async (id, category) => {
+    const categories = await userModel.findOne({ _id: id }, { _id: 0, categories: 1 });
 
     return true;
 }
@@ -76,9 +77,9 @@ const createBill = async (req, res) => {
 
     const { category, subcategory, date, amount, description } = req.body;
 
-    if (!checkCategoryExists) {
-        return res.status(404).json({error: 'Category does not exist'});
-    }
+    // if (!checkCategoryExists) {
+    //     return res.status(404).json({error: 'Category does not exist'});
+    // }
 
     try {
         const newBill = await yrToModel[year].create({ owner, category, subcategory, date, amount, description });
@@ -87,6 +88,48 @@ const createBill = async (req, res) => {
         res.status(400).json({ error: error.message });
     }
 }
+
+// Create multiple new bill documents in collection
+const createBills = async (req, res) => {
+    const owner = req.user._id;
+    const { year } = req.params;
+
+    if (!year || !(year in yrToModel)) {
+        return res.status(404).json({error: 'Year not provided or year does not exist'});
+    }
+
+    const bills = req.body;
+    if (!bills) {
+        return res.status(404).json({error: 'Bills not provided'});
+    }
+
+    bills.forEach(element => {
+        element.owner = owner;
+    });
+
+    // if (!checkCategoryExists) {
+    //     return res.status(404).json({error: 'Category does not exist'});
+    // }
+
+    try {
+        const newBills = await yrToModel[year].insertMany(bills);
+        res.status(201).json(newBills);
+    } catch (error) {
+        const writeErrors = error.writeErrors || [];
+        const failedBills = [];
+        if (writeErrors.length > 0) {
+            error.writeErrors.forEach(writeError => {
+                const failedBill = bills[writeError.index];
+                failedBill.error = writeError.errmsg;
+                failedBills.push(failedBill);
+            });
+            return res.status(400).json({error: 'Bill write failure', data: failedBills});
+        }
+        console.error(error);
+        res.status(500).json({error: 'An internal server error occurred'});
+    }
+}
+
 
 // Delete a bill in collection
 const deleteBill = async (req, res) => {
@@ -165,6 +208,7 @@ module.exports = {
     getBillsByCategory,
     getBill,
     createBill,
+    createBills,
     deleteBill,
     updateBill,
     resetCollection

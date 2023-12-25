@@ -3,20 +3,33 @@ import { createContext, useReducer } from 'react';
 export const BillsContext = createContext();
 
 const sortedInsert = (array, element) => {
-	let newArray = [];
+	if (element.date >= array[array.length - 1].date) {
+		array.push(element);
+		return array;
+	}
+
+	let newArray = new Array(array.length + 1);
 	let index = 0;
 
 	while (index < array.length && array[index].date > element.date) {
-		newArray.push(array[index]);
+		newArray[index] = array[index];
 		index++;
 	}
 	newArray.push(element);
 	while (index < array.length) {
-		newArray.push(array[index]);
+		newArray[index + 1] = array[index];
 		index++;
 	}
 
 	return newArray;
+}
+
+// function to combine current bills with an array of new bills
+// return array of combined bills sorted by date in descending order
+const insertAndSortBills = (bills, newBills) => {
+	let sortedBills = [...bills, ...newBills];
+
+	return sortedBills.sort((a, b) => b.date - a.date);
 }
 
 export const billsReducer = (state, action) => {
@@ -26,9 +39,12 @@ export const billsReducer = (state, action) => {
 				bills: action.payload
 			}
 		case 'CREATE_BILL':
-			// TODO: add is sorted to payload so dont have to use sorted insert
 			return {
 				bills: sortedInsert(state.bills, action.payload)
+			}
+		case 'CREATE_BILLS':
+			return {
+				bills: insertAndSortBills(state.bills, action.payload)
 			}
 		case 'DELETE_BILL':
 			return {
