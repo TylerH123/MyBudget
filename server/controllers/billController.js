@@ -5,6 +5,7 @@ require('dotenv').config();
 
 const yrToModel = {
     '2023': billModels.bills2023Model,
+    '2024': billModels.bills2024Model
 }
 const adminPass = process.env.ADMIN_PASS;
 
@@ -115,17 +116,24 @@ const createBills = async (req, res) => {
         const newBills = await yrToModel[year].insertMany(bills);
         res.status(201).json(newBills);
     } catch (error) {
-        const writeErrors = error.writeErrors || [];
         const failedBills = [];
-        if (writeErrors.length > 0) {
-            error.writeErrors.forEach(writeError => {
-                const failedBill = bills[writeError.index];
-                failedBill.error = writeError.errmsg;
-                failedBills.push(failedBill);
-            });
-            return res.status(400).json({error: 'Bill write failure', data: failedBills});
+        if (error.errors) {
+            console.log(error.errors);
+            // error.errors.forEach(validationErrorDoc => {
+            //     const failedBill = bills[validationErrorDoc.index]; 
+            //     console.log(failedBill);
+            // });
         }
-        console.error(error);
+        // const writeErrors = error.writeErrors || [];
+        // if (writeErrors.length > 0) {
+        //     writeErrors.forEach(writeError => {
+        //         const failedBill = bills[writeError.index];
+        //         failedBill.error = writeError.errmsg;
+        //         failedBills.push(failedBill);
+        //     });
+        //     return res.status(400).json({error: 'Bill write failure', data: failedBills});
+        // }
+        // console.error(error);
         res.status(500).json({error: 'An internal server error occurred'});
     }
 }

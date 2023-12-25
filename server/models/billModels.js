@@ -24,8 +24,10 @@ const billSchema = new mongoose.Schema({
 });
 
 const bills2023Model = mongoose.model('Bills2023', billSchema, '2023');
+const bills2024Model = mongoose.model('Bills2024', billSchema, '2024');
 
 // Export the models
 module.exports = {
-    bills2023Model
+    bills2023Model,
+    bills2024Model
 };

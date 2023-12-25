@@ -67,32 +67,9 @@ const CSVParser = () => {
 		} catch (err) {
 			// TODO: create array to store all bad entries and print them out later
 			console.log(err);
+			setError(err.message);
 		}
 	}
-
-	// const createAndSendBill = async (item) => {
-	// 	try {
-	// 		const bill = { 
-	// 			category: 'Food', 
-	// 			subcategory: item.Place, 
-	// 			date: new Date(item.Date), 
-	// 			amount: convertPriceStringToInt(item.Price), 
-	// 			description: null
-	// 		};
-
-	// 		const [ res, data ] = await postBill(user.token, bill);
-	// 		if (!res.ok) {
-	// 			throw new Error(data.error);
-	// 		}
-	// 		dispatch({type: 'CREATE_BILL', payload: data});
-	// 	} catch (err) {
-	// 		// TODO: create array to store all bad entries and print them out later
-	// 		console.log(err);
-	// 		console.log('before', badEntries);
-	// 		setBadEntries([...badEntries, item]);
-	// 		console.log('after', badEntries);
-	// 	}
-	// }
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
