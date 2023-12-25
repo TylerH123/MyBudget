@@ -116,6 +116,7 @@ const createBills = async (req, res) => {
         const newBills = await yrToModel[year].insertMany(bills);
         res.status(201).json(newBills);
     } catch (error) {
+        // TODO: find all documents that failed insert and return
         const failedBills = [];
         if (error.errors) {
             console.log(error.errors);
