@@ -24,12 +24,13 @@ const sortedInsert = (array, element) => {
 	return newArray;
 }
 
+// TODO: fix the sorting
 // function to combine current bills with an array of new bills
 // return array of combined bills sorted by date in descending order
 const insertAndSortBills = (bills, newBills) => {
-	let sortedBills = [...bills, ...newBills];	
-	sortedBills.sort((a, b) => b.date - a.date)
-	console.log(sortedBills);
+	let sortedBills = [...bills, ...newBills];
+	sortedBills.sort((a, b) => b.date - a.date);
+	// console.log(sortedBills);
 
 	return sortedBills;
 }
@@ -45,6 +46,7 @@ export const billsReducer = (state, action) => {
 				bills: sortedInsert(state.bills, action.payload)
 			}
 		case 'CREATE_BILLS':
+			console.log(insertAndSortBills(state.bills, action.payload));
 			return {
 				bills: insertAndSortBills(state.bills, action.payload)
 			}
